@@ -1,0 +1,29 @@
+/**
+*   @input currentCustomer : dw.customer.Customer
+*   @input cardType : String
+*/
+importPackage( dw.system );
+importPackage( dw.net );
+importPackage( dw.web );
+importPackage( dw.crypto );
+importPackage( dw.util );
+importPackage( dw.svc );
+function execute( pdict ) : Number
+{
+		var a : Array = new Array();
+		var b : String = pdict.profile.custom.cardType;
+	    var str = "";
+	    if(b==null){
+	    	str = pdict.cardType;
+	    }else{
+	    	var c = b.split(",");
+	    	for(var i=0;i<c.length;i++){
+				a.push(c[i]);
+			}
+	    	a.push(pdict.cardType);
+	    	str = a.join();
+	    }
+	    pdict.profile.custom.cardType = str;
+   return PIPELET_NEXT;
+}
+exports.execute = execute;

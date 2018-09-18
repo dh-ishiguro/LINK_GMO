@@ -1,0 +1,22 @@
+<!--- TEMPLATENAME: gmocreditredirect.isml --->
+
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=Windows-31J">
+	</head>
+
+	<body OnLoad='OnLoadEvent();'>
+		<form name="ACSCall" action="${pdict.ACSUrl}" method="POST">
+			<input type="hidden" name="PaReq" value="${pdict.PaReq}">
+			<input type="hidden" name="TermUrl" value="${pdict.TermUrl}">
+			<input type="hidden" name="MD" value="${pdict.MD}">
+		</form>
+
+		<script >
+			function OnLoadEvent() {
+				document. ACSCall.submit();
+			}
+		</script>
+	</body>
+</html>
+

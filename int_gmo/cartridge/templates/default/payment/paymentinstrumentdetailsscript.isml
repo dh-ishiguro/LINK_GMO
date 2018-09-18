@@ -1,0 +1,37 @@
+<!--- TEMPLATENAME: paymentinstrumentdetailsscript.isml --->
+<script type="text/javascript">
+                    function execPurchase(response) {
+                        console.log(response);
+                        if( response.resultCode != "000" ){
+                            document.getElementById("crdCardtoken").value = "";
+                        }else{
+                            document.getElementById("crdCardtoken").value = response.tokenObject.token;
+                        }
+                        var form = document.getElementById("CreditCardForm");
+                        form.submit();
+                    }
+                    function doPurchase(){
+                        var cardno,expire,securitycode,holdername;
+                        cardno = document.getElementById("dwfrm_paymentinstruments_creditcards_newcreditcard_number").value.trim();
+                        var a = document.getElementById("dwfrm_paymentinstruments_creditcards_newcreditcard_expiration_year");
+                        var b = document.getElementById("dwfrm_paymentinstruments_creditcards_newcreditcard_expiration_month");
+                        var cardYear = a.options[a.selectedIndex].value;
+                        var cardMonth = b.options[b.selectedIndex].value;
+                        expire  = cardYear.slice(-2) + ((cardMonth.length==1)?'0' + cardMonth:cardMonth);
+                        securitycode = document.getElementById("dwfrm_paymentinstruments_creditcards_newcreditcard_cvn").value;
+                        holdername = document.getElementById("cardholderName").value;
+                        var shopID = document.getElementById("shopID").value;
+                        Multipayment.init(shopID);
+                        Multipayment.getToken(
+                        {
+                            cardno: cardno,
+                            expire: expire,
+                            securitycode: securitycode
+                        },execPurchase
+                    );
+                    }
+                    document.getElementById("applyBtn").addEventListener("click", function(event){
+                            event.preventDefault();
+                            doPurchase();
+                    });
+</script>

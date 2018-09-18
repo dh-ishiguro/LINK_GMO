@@ -1,0 +1,22 @@
+<!--- TEMPLATENAME: paymentmethodscardinfo.isml --->
+ <select name="gmoPaymentCardList" id="gmoPaymentCardList" class="input-select">
+										<isloop items="${pdict.ApplicableCreditCards}" var="creditCardInstr">
+											<isscript>
+											    importPackage( dw.system );
+												var a : String = pdict.CurrentCustomer.profile.custom.cardType;
+												var currentType;
+												if(a==null){
+													currentType = null;
+												}else{
+													var c = a.split(",");
+													currentType = c[creditCardInstr.creditCardSeq];
+												}
+											</isscript>
+											<option value="${creditCardInstr.creditCardSeq}" data-card='{"card_type":"${currentType}",
+												"card_number":"${creditCardInstr.creditCardNumber}","expire_month":"${creditCardInstr.creditCardExpirationMonth}","expire_year":"${creditCardInstr.creditCardExpirationYear}","cvn":"123"}'
+												${creditCardInstr.UUID==pdict.CurrentSession.custom.gmoSelectedCard ? 'selected' : ''}>
+												(<isprint value="${currentType}"/>) <isprint value="${creditCardInstr.creditCardNumber}"/> - ${Resource.msg('billing.creditcardlistexp','checkout',null)} <isprint value="${creditCardInstr.creditCardExpirationMonth}" formatter="00" />.<isprint value="${creditCardInstr.creditCardExpirationYear}" formatter="0000" />
+											</option>
+										</isloop>							
+								  		<option value="AddNewCard" ${pdict.CurrentSession.custom.gmoSelectedCard == 'AddNewCard' ? 'selected' : ''}>Add new card</option>							
+								</select>

@@ -1,0 +1,71 @@
+<!--- TEMPLATENAME: postpaysms.isml --->
+<isscript>
+	var result = require('~/../int_gmo/cartridge/controllers/GMO_PAYMENT').IsEnableGMO();
+	var paymentMethodIsPostpay=false;
+</isscript>
+
+<isloop items="${pdict.Basket.paymentInstruments}" var="paymentInstr" status="loopstate">
+	<isif condition="${paymentInstr.paymentMethod.equals('GMOPOSTPAY')}">
+		<isscript>paymentMethodIsPostpay=true;</isscript>
+	</isif>
+</isloop>
+
+<isif condition="${paymentMethodIsPostpay==true}">
+	<isif condition="${result.isEnableSMS==true}">
+		<script type="text/javascript">
+
+		<!-- GMOSMS 認証用 js -->
+		document.write("<script src=\"${pdict.CurrentSession.custom.smscerturl!=null?pdict.CurrentSession.custom.smscerturl:''}" + getQueryString() + "\" type=\"text/javascript\"><\/script>");
+
+		<!-- クエリストリング生成用(YYYYMMDDHH24) -->
+		function getQueryString(){
+			var date = new Date();
+			var year  = date.getFullYear();
+			var month = date.getMonth() + 1;
+			var day   = date.getDate();
+			var hour  = date.getHours();
+			return "?" + year + addZero(month) + addZero(day) + addZero(hour);
+		}
+
+		<!-- 日付・時間が 1 桁の場合に 0 を付与 -->
+		function addZero(value) {
+			if (value < 10) {
+				return '0' + value;
+			}
+			return value;
+		}
+
+		<!-- SMS 認証結果 -->
+		function gmoSmsAuthResult(jsondata) {
+			var shopTransactionId = jsondata.transactionResult.shopTransactionId;
+			document.getElementById('gmoJsonResult').value=jsondata.result;
+			document.getElementById('gmoJsonShopTransactionId').value=jsondata.transactionResult.shopTransactionId;
+			if (jsondata.result=='OK') {
+				document.getElementById('gmoJsonGmoTransactionId').value=jsondata.transactionResult.gmoTransactionId;
+				document.getElementById('gmoJsonAuthorResult').value=jsondata.transactionResult.authorResult;
+				document.getElementById('gmoJsonChksumRes').value=jsondata.transactionResult.chksumRes;
+			} else {
+				for (var i = 0;i < jsondata.errors.error.length; i++) {
+					document.getElementById('gmoJsonError').value = document.getElementById('gmoJsonError').value + jsondata.errors.error[0].errorCode;
+				}
+			}
+			var target = document.getElementById("submit-order");
+			target.submit();
+		}
+
+		<!-- 注文確定ボタン押下時 -->
+		function kakutei() {
+			if (typeof gmoAuthOrderDecision == "function") {
+				gmoAuthOrderDecision();
+
+			} else {
+				<!-- 読み込みエラー発生時の処理 -->
+				document.getElementById('gmoJsonResult').value='APIERROR';
+				document.getElementById('gmoJsonError').value='APIERROR';
+				var target = document.getElementById("submit-order");
+				target.submit();
+			}
+		}
+		</script>
+	</isif>
+</isif>

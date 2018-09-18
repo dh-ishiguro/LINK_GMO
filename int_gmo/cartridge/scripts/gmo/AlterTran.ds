@@ -1,0 +1,70 @@
+/**
+ * AlterTran.ds
+ *
+ * This script attempts to get accessID,accessPass.
+ *
+ * @input Order : dw.order.Order
+ * @input JobCd : String
+ * @input transactionType : String
+ * @output resultTransaction : String
+*/
+importPackage( dw.system );
+importPackage( dw.net );
+importPackage( dw.web );
+importPackage( dw.crypto );
+importPackage( dw.util );
+importPackage( dw.svc );
+
+var apiCommon = require('./ApiCommon');
+
+function execute( pdict : PipelineDictionary ) : Number
+{
+	/*transactionType
+		1 : sales capture
+	*/
+	var paymentStatus ="Not Paid!";
+	var orderStatus ="Open!";
+   	 try {
+   		var shopID = Site.getCurrent().getCustomPreferenceValue('gmo_shopID');
+		var shopPass = Site.getCurrent().getCustomPreferenceValue('gmo_shopPass');
+		var totalAmount;
+
+		for each(p in pdict.Order.paymentInstruments){
+	    	if( pdict.Order.paymentInstrument.METHOD_CREDIT_CARD.equals(p.paymentMethod) ) {
+				totalAmount = p.paymentTransaction.amount.value;
+				break;
+	    	}
+	    }
+
+	    var paramRequest = 'ShopID=' + shopID + '&'
+	                       + 'ShopPass=' + shopPass + '&'
+	                       + 'AccessID=' +  pdict.Order.custom.gmoAccessID + '&'
+	                       + 'AccessPass=' + pdict.Order.custom.gmoAccessPass +'&'
+	                       + 'JobCd=' + pdict.JobCd;
+	    if(pdict.transactionType=="1"){
+	    	paramRequest += '&Amount=' + Math.round(totalAmount);
+	    }
+
+	    var objrespone = apiCommon.callApi("GMO.AlterTransaction", paramRequest);
+
+	    if(objrespone.hasOwnProperty('AccessID') && objrespone.hasOwnProperty('AccessPass')){
+	    	pdict.resultTransaction = "1";
+	    	//Reset status payment into paid if capture
+	    	if(pdict.transactionType=="1"){
+	    		pdict.Order.setPaymentStatus(dw.order.Order.PAYMENT_STATUS_PAID);
+	    		paymentStatus="Paid!";
+	    	}else{
+	    		orderStatus = "Cancelled!";
+	    	}
+	    	Logger.getLogger("GMO","GMO").debug("API AlterTran.idPass : alter order ID {0} success !; order status :"+ orderStatus +"; payment status : " +  paymentStatus + "; JobCd : " + pdict.JobCd ,pdict.Order.orderNo);
+	    }else{
+	    	Logger.getLogger("GMO","GMO").debug("API AlterTran.idPass : alter order ID {0} fail !; order status :"+ orderStatus +"; payment status : " +  paymentStatus + "; JobCd : " + pdict.JobCd + "; ErrInfo : " +objrespone.ErrInfo ,pdict.Order.orderNo);
+	    	return PIPELET_ERROR;
+	    }
+    } catch(e) {
+    	Logger.getLogger("GMO","GMO").debug("API AlterTran.idPass : alter order ID {0} error !; order status :"+ orderStatus +"; payment status : " +  paymentStatus + "; JobCd : " + pdict.JobCd, pdict.Order.orderNo);
+		return PIPELET_ERROR;
+	}
+  	return PIPELET_NEXT;
+}
+exports.execute = execute;

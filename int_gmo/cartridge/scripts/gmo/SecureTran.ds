@@ -1,0 +1,43 @@
+/**
+ * SecureTran.ds
+ *
+ * This script attempts to get respone object,Token.
+ *
+ * @input PaRes : String
+ * @input MD    : String
+*/
+importPackage( dw.system );
+importPackage( dw.net );
+importPackage( dw.web );
+importPackage( dw.crypto );
+importPackage( dw.util );
+importPackage( dw.svc );
+
+var apiCommon = require('./ApiCommon');
+
+function execute( pdict : PipelineDictionary ) : Number
+{
+	let logger = Logger.getLogger("GMO","GMO");
+	try {
+		let paramRequest	= 'PaRes=' + Encoding.toURI(pdict.PaRes) + '&'
+							+ 'MD=' + pdict.MD;
+
+		var objrespone = apiCommon.callApi("GMO.SecureTran", paramRequest);
+
+		pdict.OrderID       = objrespone["OrderID"];
+		if(!objrespone.hasOwnProperty('ErrCode')){
+			logger.debug("API SecureTran.idPass : execute order ID {0} success !", objrespone['OrderID']);
+		}else{
+			logger.debug("API SecureTran.idPass : execute order ID {0} fail !; ErrCode : {1}; ErrInfo : {2}"
+												, objrespone["OrderID"]
+												, objrespone["ErrCode"]
+												, objrespone["ErrInfo"]);
+			return PIPELET_ERROR;
+		}
+	} catch(e) {
+		logger.debug("API SecureTran.idPass : Exception error !");
+		return PIPELET_ERROR;
+	}
+	return PIPELET_NEXT;
+}
+exports.execute = execute;

@@ -1,0 +1,16 @@
+<iscontent type="text/html" charset="UTF-8" compact="true"/>
+<iscomment>
+	Creates a paging bar on the page
+</iscomment>
+<ismodule template = "components/pagingbar"
+	name="pagingbar"
+	attribute="pageurl"
+	attribute="pagingmodel"
+/>
+
+<iscomment>renders order details</iscomment>
+<ismodule template="components/order/orderdetails"
+	name="orderdetails"
+	attribute="order"
+	attribute="orderstatus"
+/>

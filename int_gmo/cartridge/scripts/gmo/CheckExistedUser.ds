@@ -1,0 +1,44 @@
+/**
+ * CheckExistedUser.ds
+ *
+ * This script check if userId is existed in GMO.
+ *
+ * @input UserId : String
+ * @output CheckExistedUser : Boolean
+*/
+importPackage( dw.system );
+importPackage( dw.net );
+importPackage( dw.web );
+importPackage( dw.crypto );
+importPackage( dw.util );
+importPackage( dw.svc );
+
+var apiCommon = require('./ApiCommon');
+
+function execute( pdict : PipelineDictionary ) : Number
+{
+   	try {
+		pdict.CheckExistedUser = false;
+   		var siteID = Site.getCurrent().getCustomPreferenceValue('gmo_siteID');
+		var sitePass = Site.getCurrent().getCustomPreferenceValue('gmo_sitePass');
+	    var paramRequest = 'SiteID=' + siteID + '&'
+	                       + 'SitePass=' + sitePass + '&'
+	                       + 'MemberID=' +  pdict.UserId;
+
+	    var objrespone = apiCommon.callApi("GMO.SearchMember", paramRequest);
+
+	    if(objrespone.hasOwnProperty('MemberID') && objrespone['MemberID']==pdict.UserId){
+	    	pdict.CheckExistedUser = true;
+	    	Logger.getLogger("GMO","GMO").debug("API SearchMember.idPass : search member {0} success !!!",pdict.UserId);
+	    }else{
+	    	pdict.CheckExistedUser = false;
+	    	Logger.getLogger("GMO","GMO").debug("API SearchMember.idPass : search member {0} not found !!! ErrInfo={1}",pdict.UserId, objrespone['ErrInfo']);
+	    }
+    } catch(e) {
+    	Logger.getLogger("GMO","GMO").debug("API SearchMember.idPass : search member {0} error !!!",pdict.UserId);
+		return PIPELET_ERROR;
+	}
+	return PIPELET_NEXT;
+}
+
+exports.execute = execute;

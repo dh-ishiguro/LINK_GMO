@@ -1,0 +1,67 @@
+/**
+ * GetCardInfo.ds
+ *
+ * This script attempts to check if userid registered GMO and get all card of this CustomerNo
+ * then change cards into demandware format
+ *
+ * @input CustomerNo : String
+ * @output CardList : dw.util.Collection
+*/
+importPackage( dw.system );
+importPackage( dw.net );
+importPackage( dw.web );
+importPackage( dw.crypto );
+importPackage( dw.util );
+importPackage( dw.svc );
+
+var apiCommon = require('./ApiCommon');
+
+function execute( pdict )
+{
+        try {
+        var siteID = Site.getCurrent().getCustomPreferenceValue('gmo_siteID');
+        var sitePass = Site.getCurrent().getCustomPreferenceValue('gmo_sitePass');
+        var paramRequest = 'SiteID=' + siteID + '&'
+                        + 'SitePass=' + sitePass + '&'
+                        + 'MemberID=' +  pdict.CustomerNo;
+
+        var objrespone = apiCommon.callApi("GMO.SearchCard", paramRequest);
+
+        var listOfCard : Collection = new ArrayList();
+        if(objrespone.hasOwnProperty('CardNo')){
+            var arrCardName = objrespone['CardName'].split('|');
+            var arrCardNo = objrespone['CardNo'].split('|');
+            var arrExpried = objrespone['Expire'].split('|');
+            var arrHolderName = objrespone['HolderName'].split('|');
+            var arrCardSeq = objrespone['CardSeq'].split('|');
+            var currentCustomerProfile = dw.customer.CustomerMgr.getProfile(pdict.CustomerNo);
+
+            var cardType:Array = (currentCustomerProfile.custom.cardType==null)?null:currentCustomerProfile.custom.cardType.split(",");
+            if ( cardType.length != arrCardName.length ) {
+            	Logger.getLogger("GMO","GMO").debug("GetCardInfo : unmatch CustomerProfile and respone. CustomerProfile.length={0} & arrCardName.length={1}", cardType.length, arrCardName.length );
+            }
+            for( let j in arrCardName){
+                var dwCard : Object = {
+                        UUID : cardType[j] + '-' + arrCardNo[j],
+                        creditHolderName : arrHolderName[j],
+                        creditCardSeq : arrCardSeq[j],
+                        creditCardType : (cardType==null)?"":cardType[j],
+                        creditCardNumber : arrCardNo[j],
+                        creditCardExpirationMonth : arrExpried[j].slice(-2),
+                        creditCardExpirationYear : dw.system.System.getCalendar().getTime().getFullYear().toString().substring(0,2) + arrExpried[j].substring(0,2)
+                    };
+                listOfCard.add(dwCard);
+            }
+            pdict.CardList = listOfCard;
+            Logger.getLogger("GMO","GMO").debug("API SearchCard.idPass : get list card of user {0} success !!!",pdict.CustomerNo);
+        }else{
+            pdict.CardList = null;
+            Logger.getLogger("GMO","GMO").debug("API SearchCard.idPass : get list card of user {0} fail !!! ErrInfo={1}",pdict.CustomerNo, objrespone['ErrInfo']);
+        }
+    } catch(e) {
+        Logger.getLogger("GMO","GMO").debug("API SearchCard.idPass : get list card of user {0} error !!!",pdict.CustomerNo);
+        return PIPELET_ERROR;
+    }
+  return PIPELET_NEXT;
+}
+exports.execute = execute;

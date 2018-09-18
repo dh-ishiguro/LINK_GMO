@@ -1,0 +1,19 @@
+importPackage( dw.svc);
+importPackage( dw.net );
+importPackage( dw.io );
+
+ServiceRegistry.configure("GMO.ExecTranRakutenId", {
+	createRequest: function(svc:HTTPService, params) {																    	
+				    	return params;	    	
+					},
+	parseResponse: function(svc:HTTPService, response) {
+						return response;
+					},
+	mockCall: function(svc:HTTPService, params) {
+					return [
+						{ "name": "file1", "timestamp": new Date(2011, 02, 21)},
+						{ "name": "file2", "timestamp": new Date(2012, 02, 21)},
+						{ "name": "file3", "timestamp": new Date(2013, 02, 21)}
+					];
+				}
+});

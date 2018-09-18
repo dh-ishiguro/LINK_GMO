@@ -1,0 +1,118 @@
+/**
+ * RegisterCardInfo.ds
+ *
+ * This script attempts to register a credit card in GMO.
+ *
+ * @input AccountID : String
+ * @input accessID : String
+ * @input accessPass : String
+ * @input OrderNo : String
+ * @input ObjCredit : Object
+ * @output ErrorMessage : String
+*/
+importPackage( dw.system );
+importPackage( dw.net );
+importPackage( dw.web );
+importPackage( dw.crypto );
+importPackage( dw.util );
+importPackage( dw.svc );
+
+var apiCommon = require('./ApiCommon');
+
+function execute( pdict : PipelineDictionary ) : Number
+{
+
+	// set default message for api when happen error
+	 pdict.ErrorMessage = "defaulterrormessage";
+   	 try {
+   	 	var cardToken =  pdict.ObjCredit['cardToken'];
+   	    var cardholderName =  pdict.ObjCredit['cardholdername'];
+   		var siteID = Site.getCurrent().getCustomPreferenceValue('gmo_siteID');
+		var sitePass = Site.getCurrent().getCustomPreferenceValue('gmo_sitePass');
+		var shopID = Site.getCurrent().getCustomPreferenceValue('gmo_shopID');
+		var shopPass = Site.getCurrent().getCustomPreferenceValue('gmo_shopPass');
+		var OrderID = (pdict.OrderNo =="")?makeOrderId():pdict.OrderNo;
+		var accessID = pdict.accessID;
+		var accessPass = pdict.accessPass;
+	    var objTransaction;
+
+		if(pdict.OrderNo ==""){
+			objTransaction = getTransaction(OrderID);
+			if(objTransaction==null){
+				pdict.ErrorMessage = "Can not get transaction!";
+				return PIPELET_ERROR;
+			}
+			accessID = objTransaction['AccessID'];
+			accessPass = objTransaction['AccessPass'];
+		}
+
+
+
+	    var paramRequest = 'SiteID=' + siteID + '&'
+	                       + 'SitePass=' + sitePass + '&'
+	                       + 'ShopID=' + shopID + '&'
+	                       + 'ShopPass=' + shopPass + '&'
+	                       + 'MemberID=' +  pdict.AccountID + '&'
+	                       + 'Token=' +  cardToken + '&'
+	                       + 'OrderID=' + OrderID + '&'
+	                       + 'SeqMode=1';
+
+	    if(pdict.OrderNo ==""){
+	    	var execTran = execTransaction(objTransaction,OrderID,cardToken);
+	    }
+
+		var objrespone = apiCommon.callApi("GMO.SaveCard", paramRequest);
+
+	    if(objrespone.hasOwnProperty('CardNo')){
+	    	Logger.getLogger("GMO","GMO").debug("API TradedCard.idPass : register card number {0} success !!!",objrespone.CardNo);
+	    }else{
+	    	Logger.getLogger("GMO","GMO").debug("API TradedCard.idPass : register card fail !!! ErrInfo={0}",objrespone.ErrInfo);
+	    	return PIPELET_ERROR;
+	    }
+    } catch(e) {
+    	Logger.getLogger("GMO","GMO").debug("API TradedCard.idPass : register card error !!!");
+		return PIPELET_ERROR;
+	}
+   return PIPELET_NEXT;
+}
+
+function makeOrderId()
+{
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    for( var i=0; i < 10; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    return text;
+}
+function getTransaction(OrderID)
+{
+	var shopID = Site.getCurrent().getCustomPreferenceValue('gmo_shopID');
+	var shopPass = Site.getCurrent().getCustomPreferenceValue('gmo_shopPass');
+    var paramRequest = 'ShopID=' + shopID + '&'
+                       + 'ShopPass=' + shopPass + '&'
+                       + 'OrderID=' +  OrderID + '&'
+                       + 'JobCd=CHECK';
+
+    var objrespone = apiCommon.callApi("GMO.EntryTransaction", paramRequest);
+
+    if(objrespone.hasOwnProperty('AccessID') && objrespone.hasOwnProperty('AccessPass')){
+    	return objrespone;
+    }
+    Logger.getLogger("GMO","GMO").debug("API EntryTransaction.idPass in RegisterCardInfo : fail !!! ErrInfo={0}",objrespone.ErrInfo);
+	return null;
+}
+function execTransaction(objTransaction,OrderID,cardToken)
+{
+	var paramRequest = 'AccessID=' + objTransaction['AccessID']
+	                   +'&AccessPass=' + objTransaction['AccessPass']
+	                   +'&OrderID=' +  OrderID
+	                   +'&Token=' + cardToken;
+    var objrespone = apiCommon.callApi("GMO.ExecTransaction", paramRequest);
+
+    if(objrespone.hasOwnProperty('OrderID')){
+    	return 1;
+    }
+	Logger.getLogger("GMO","GMO").debug("API ExecTransaction.idPass in RegisterCardInfo : fail !!! ErrInfo={0}",objrespone.ErrInfo);
+	return 0;
+}
+exports.execute = execute;

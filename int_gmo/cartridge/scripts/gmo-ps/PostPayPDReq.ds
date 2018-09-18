@@ -1,0 +1,69 @@
+/**
+ * PostPayPDReq.ds
+ *
+ * @input OrderID : String
+ * @input AccessID : String
+ * @input AccessPass : String
+ * @input MemberID : String
+ * @input PaymentInstruments : dw.order.PaymentInstrument
+ * @input jobCD : String
+ * @input payment : Boolean
+ * @output resultPayment : Object
+*/
+importPackage( dw.system );
+importPackage( dw.net );
+importPackage( dw.web );
+importPackage( dw.crypto );
+importPackage( dw.util );
+importPackage( dw.svc );
+importPackage( dw.io );
+function execute( pdict : PipelineDictionary ) : Number
+{
+    try {
+        var group = dw.order.OrderMgr.getOrder(pdict.OrderID).getCustomer().getCustomerGroups().iterator();
+        var html ='';
+        while(group.hasNext()){
+            let g = group.next();
+            if(g.getID() != 'Everyone')
+                html += g.getID().toString();
+        }
+        var service:Service;
+        var result:Result;
+        var paramRequest = '<?xml version="1.0" encoding="UTF-8"?>\n'+pdict.Details;
+
+        //send request
+        service = ServiceRegistry.get("GMO.PostpayPdRequest");
+        service.addHeader("Content-Type", "text/xml; charset=\"UTF-8\"");
+        service.setRequestMethod("POST");
+        result = service.call(paramRequest);
+        if ( result.status !== 'OK' ) {
+            Logger.getLogger("GMO","GMO").debug("API transaction.do in PostPayPDReq status NG :"+result.errorMessage);
+        }
+       	var respone = result.object.text
+        Logger.getLogger("GMO","GMO").debug("API transaction.do : res=" + respone);
+
+        //結果判定を判定してNGならPIPELET_ERROR
+        var reader = new Reader(respone);
+        var xmlStreamReader = new XMLStreamReader(reader);
+        if (xmlStreamReader.next() == XMLStreamConstants.START_ELEMENT) {
+            var rcvxml : XML = xmlStreamReader.readXMLObject();
+            if (rcvxml.result.toString() === 'NG') {
+                Logger.getLogger("GMO","GMO").debug("API transaction.do : result NG OrderID: " + rcvxml.transactionResult.shopTransactionId + respone);
+                return PIPELET_ERROR;
+            }
+            if (rcvxml.transactionResult.authorResult.toString() === 'NG') {
+                Logger.getLogger("GMO","GMO").debug("API transaction.do : authorResult NG OrderID: " + rcvxml.transactionResult.shopTransactionId + respone);
+                return PIPELET_ERROR;
+            }
+            pdict.AccessID = rcvxml.transactionResult.gmoTransactionId;
+        }
+
+    } catch(e) {
+        var paymentStatus = "Not Paid!";
+        Logger.getLogger("GMO","GMO").debug("API transaction.do : execute order ID {0} error !",pdict.OrderID);
+        return PIPELET_ERROR;
+    }
+    return PIPELET_NEXT;
+}
+
+exports.execute = execute;

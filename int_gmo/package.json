@@ -1,0 +1,21 @@
+{
+	"init": ["./cartridge/scripts/init/httpRegistrationUserInit.ds",
+			 "./cartridge/scripts/init/httpSearchUserInit.ds",
+			 "./cartridge/scripts/init/httpSaveCardInit.ds",
+			 "./cartridge/scripts/init/httpSearchCardInit.ds",
+			 "./cartridge/scripts/init/httpDeleteCardInit.ds",
+			 "./cartridge/scripts/init/httpEntryTranInit.ds",
+			 "./cartridge/scripts/init/httpExecTranInit.ds",
+			 "./cartridge/scripts/init/httpAlterTranInit.ds",
+			 "./cartridge/scripts/init/httpTradedCardInit.ds",
+			 "./cartridge/scripts/init/httpEntryTranRakutenIdInit.ds",
+			 "./cartridge/scripts/init/httpExecTranRakutenIdInit.ds",
+			 "./cartridge/scripts/init/httpRakutenIdCancelInit.ds",
+			 "./cartridge/scripts/init/httpRakutenIdChangeInit.ds",
+			 "./cartridge/scripts/init/httpRakutenIdSalesInit.ds",
+			 "./cartridge/scripts/init/httpPostpayMCTransactionInit.ds",
+			 "./cartridge/scripts/init/httpPostpayPdRequestInit.ds",
+			 "./cartridge/scripts/init/httpPostpayTransactionInit.ds",
+			 "./cartridge/scripts/init/httpSecureTranInit.ds"
+			]
+}

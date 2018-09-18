@@ -1,0 +1,50 @@
+/**
+ * EntryTran.ds
+ *
+ * This script attempts to get accessID,accessPass.
+ *
+ * @input Order : dw.order.Order
+ * @input JobCd : String
+ * @output AccessID : String
+ * @output AccessPass : String
+*/
+importPackage( dw.system );
+importPackage( dw.net );
+importPackage( dw.web );
+importPackage( dw.crypto );
+importPackage( dw.util );
+importPackage( dw.svc );
+
+var apiCommon = require('./ApiCommon');
+
+function execute( pdict : PipelineDictionary ) : Number
+{
+   	 try {
+   		var shopID = Site.getCurrent().getCustomPreferenceValue('gmo_shopID');
+		var shopPass = Site.getCurrent().getCustomPreferenceValue('gmo_shopPass');
+	    var totalAmount = pdict.PaymentInstruments.paymentTransaction.amount.value;
+
+	    var paramRequest = 'ShopID=' + shopID + '&'
+	                       + 'ShopPass=' + shopPass + '&'
+	                       + 'OrderID=' +  pdict.Order.orderNo + '&'
+	                       + 'TdFlag=' +  pdict.TdFlag + '&'
+	                       + 'Amount=' + Math.round(totalAmount) +'&'
+	                       + 'JobCd=' + pdict.JobCd;
+
+	    var objrespone = apiCommon.callApi("GMO.EntryTransaction", paramRequest);
+
+	    if(objrespone.hasOwnProperty('AccessID') && objrespone.hasOwnProperty('AccessPass')){
+	    	pdict.AccessID = objrespone['AccessID'];
+	    	pdict.AccessPass = objrespone['AccessPass'];
+	    	Logger.getLogger("GMO","GMO").debug("API EntryTran.idPass : entry order ID {0} success !; order status : Open!; payment status : Not Paid!; JobCd : " + pdict.JobCd, pdict.Order.orderNo);
+	    }else{
+	    	Logger.getLogger("GMO","GMO").debug("API EntryTran.idPass : entry order ID {0} fail !; order status : Open!; payment status : Not Paid!; JobCd : " + pdict.JobCd + "; ErrInfo : " + objrespone['ErrInfo'], pdict.Order.orderNo);
+	    	return PIPELET_ERROR;
+	    }
+    } catch(e) {
+    	Logger.getLogger("GMO","GMO").debug("API EntryTran.idPass : entry order ID {0} error !; order status : Open! ; payment status : Not Paid!; JobCd : " + pdict.JobCd, pdict.Order.orderNo);
+		return PIPELET_ERROR;
+	}
+  	return PIPELET_NEXT;
+}
+exports.execute = execute;

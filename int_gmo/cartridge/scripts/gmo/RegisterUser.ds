@@ -1,0 +1,46 @@
+/**
+ * RegisterUser.ds
+ *
+ * This script register a new account in GMO.
+ *
+ * @input UserId : String
+ * @output ErrorMessage : String
+*/
+importPackage( dw.system );
+importPackage( dw.net );
+importPackage( dw.web );
+importPackage( dw.crypto );
+importPackage( dw.util );
+importPackage( dw.svc );
+
+var apiCommon = require('./ApiCommon');
+
+function execute( pdict : PipelineDictionary ) : Number
+{
+
+    // set default message for api when happen error
+    pdict.ErrorMessage = "defaulterrormessage";
+    try {
+        var siteID = Site.getCurrent().getCustomPreferenceValue('gmo_siteID');
+        var sitePass = Site.getCurrent().getCustomPreferenceValue('gmo_sitePass');
+        var paramRequest = 'SiteID=' + siteID + '&'
+                        + 'SitePass=' + sitePass + '&'
+                        + 'MemberID=' +  pdict.UserId;
+        Logger.getLogger("GMO","GMO").debug("register user params: {0}", paramRequest);
+
+        var objrespone = apiCommon.callApi("GMO.SaveMember", paramRequest);
+
+        Logger.getLogger("GMO","GMO").debug("register user response: {0}",JSON.stringify(objrespone));
+        if(objrespone.hasOwnProperty('MemberID') && objrespone['MemberID']==pdict.UserId){
+            Logger.getLogger("GMO","GMO").debug("API SaveMember.idPass : register user ID {0} success !!!",pdict.UserId);
+        }else{
+            Logger.getLogger("GMO","GMO").debug("API SaveMember.idPass : register user ID {0} fail !!!  ErrInfo={1}",pdict.UserId, objrespone['ErrInfo']);
+            return PIPELET_ERROR;
+        }
+    } catch(e) {
+        Logger.getLogger("GMO","GMO").debug("API SaveMember.idPass : register user ID {0} error !!!",pdict.UserId);
+        return PIPELET_ERROR;
+    }
+    return PIPELET_NEXT;
+}
+exports.execute = execute;

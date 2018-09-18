@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services xmlns="http://www.demandware.com/xml/impex/services/2014-09-26">
+    <service-credential service-credential-id="gmo_alterTransaction.cred">
+        <url>https://pt01.mul-pay.jp/payment/AlterTran.idPass</url>
+    </service-credential>
+
+    <service-credential service-credential-id="gmo_deletecard.cred">
+        <url>https://pt01.mul-pay.jp/payment/DeleteCard.idPass</url>
+    </service-credential>
+
+    <service-credential service-credential-id="gmo_entryTranRakutenId.cred">
+        <url>https://pt01.mul-pay.jp/payment/EntryTranRakutenId.idPass</url>
+    </service-credential>
+
+    <service-credential service-credential-id="gmo_entryTransaction.cred">
+        <url>https://pt01.mul-pay.jp/payment/EntryTran.idPass</url>
+    </service-credential>
+
+    <service-credential service-credential-id="gmo_execTranRakutenId.cred">
+        <url>https://pt01.mul-pay.jp/payment/ExecTranRakutenId.idPass</url>
+    </service-credential>
+
+    <service-credential service-credential-id="gmo_execTransaction.cred">
+        <url>https://pt01.mul-pay.jp/payment/ExecTran.idPass</url>
+    </service-credential>
+
+    <service-credential service-credential-id="gmo_postpayMCTransaction.cred">
+        <url>https://testshop.gmo-ab.com/auto/modifycanceltransaction.do</url>
+    </service-credential>
+
+    <service-credential service-credential-id="gmo_postpayPdReqest.cred">
+        <url>https://testshop.gmo-ab.com/auto/pdrequest.do</url>
+    </service-credential>
+
+    <service-credential service-credential-id="gmo_postpayTransaction.cred">
+        <url>https://testshop.gmo-ab.com/auto/transaction.do</url>
+    </service-credential>
+
+    <service-credential service-credential-id="gmo_rakutenIdCancel.cred">
+        <url>https://pt01.mul-pay.jp/payment/RakutenIdCancel.idPass</url>
+    </service-credential>
+
+    <service-credential service-credential-id="gmo_rakutenIdChange.cred">
+        <url>https://pt01.mul-pay.jp/payment/RakutenIdChange.idPass</url>
+    </service-credential>
+
+    <service-credential service-credential-id="gmo_rakutenIdSales.cred">
+        <url>https://pt01.mul-pay.jp/payment/RakutenIdSales.idPass</url>
+    </service-credential>
+
+    <service-credential service-credential-id="gmo_savecard.cred">
+        <url>https://pt01.mul-pay.jp/payment/TradedCard.idPass</url>
+    </service-credential>
+
+    <service-credential service-credential-id="gmo_savemember.cred">
+        <url>https://pt01.mul-pay.jp/payment/SaveMember.idPass</url>
+    </service-credential>
+
+    <service-credential service-credential-id="gmo_searchcard.cred">
+        <url>https://pt01.mul-pay.jp/payment/SearchCard.idPass</url>
+    </service-credential>
+
+    <service-credential service-credential-id="gmo_searchmember.cred">
+        <url>https://pt01.mul-pay.jp/payment/SearchMember.idPass</url>
+    </service-credential>
+
+    <service-credential service-credential-id="gmo_securetran.cred">
+        <url>https://pt01.mul-pay.jp/payment/SecureTran.idPass</url>
+    </service-credential>
+
+    <service-profile service-profile-id="gmo_alterTransaction.prof">
+        <timeout-millis>100000</timeout-millis>
+        <rate-limit-enabled>false</rate-limit-enabled>
+        <rate-limit-calls>0</rate-limit-calls>
+        <rate-limit-millis>0</rate-limit-millis>
+        <cb-enabled>false</cb-enabled>
+        <cb-calls>0</cb-calls>
+        <cb-millis>0</cb-millis>
+    </service-profile>
+
+    <service-profile service-profile-id="gmo_deletecard.prof">
+        <timeout-millis>100000</timeout-millis>
+        <rate-limit-enabled>false</rate-limit-enabled>
+        <rate-limit-calls>0</rate-limit-calls>
+        <rate-limit-millis>0</rate-limit-millis>
+        <cb-enabled>false</cb-enabled>
+        <cb-calls>0</cb-calls>
+        <cb-millis>0</cb-millis>
+    </service-profile>
+
+    <service-profile service-profile-id="gmo_entryTranRakutenId.prof">
+        <timeout-millis>100000</timeout-millis>
+        <rate-limit-enabled>true</rate-limit-enabled>
+        <rate-limit-calls>10</rate-limit-calls>
+        <rate-limit-millis>20000</rate-limit-millis>
+        <cb-enabled>true</cb-enabled>
+        <cb-calls>10</cb-calls>
+        <cb-millis>20000</cb-millis>
+    </service-profile>
+
+    <service-profile service-profile-id="gmo_entryTransaction.prof">
+        <timeout-millis>100000</timeout-millis>
+        <rate-limit-enabled>true</rate-limit-enabled>
+        <rate-limit-calls>10</rate-limit-calls>
+        <rate-limit-millis>20000</rate-limit-millis>
+        <cb-enabled>true</cb-enabled>
+        <cb-calls>10</cb-calls>
+        <cb-millis>20000</cb-millis>
+    </service-profile>
+
+    <service-profile service-profile-id="gmo_execTranRakutenId.prof">
+        <timeout-millis>100000</timeout-millis>
+        <rate-limit-enabled>true</rate-limit-enabled>
+        <rate-limit-calls>10</rate-limit-calls>
+        <rate-limit-millis>60000</rate-limit-millis>
+        <cb-enabled>true</cb-enabled>
+        <cb-calls>10</cb-calls>
+        <cb-millis>60000</cb-millis>
+    </service-profile>
+
+    <service-profile service-profile-id="gmo_execTransaction.prof">
+        <timeout-millis>100000</timeout-millis>
+        <rate-limit-enabled>true</rate-limit-enabled>
+        <rate-limit-calls>10</rate-limit-calls>
+        <rate-limit-millis>60000</rate-limit-millis>
+        <cb-enabled>true</cb-enabled>
+        <cb-calls>10</cb-calls>
+        <cb-millis>60000</cb-millis>
+    </service-profile>
+
+    <service-profile service-profile-id="gmo_postpayMCTransaction.prof">
+        <timeout-millis>100000</timeout-millis>
+        <rate-limit-enabled>true</rate-limit-enabled>
+        <rate-limit-calls>10</rate-limit-calls>
+        <rate-limit-millis>60000</rate-limit-millis>
+        <cb-enabled>true</cb-enabled>
+        <cb-calls>10</cb-calls>
+        <cb-millis>60000</cb-millis>
+    </service-profile>
+
+    <service-profile service-profile-id="gmo_postpayPdRequest.prof">
+        <timeout-millis>100000</timeout-millis>
+        <rate-limit-enabled>true</rate-limit-enabled>
+        <rate-limit-calls>10</rate-limit-calls>
+        <rate-limit-millis>60000</rate-limit-millis>
+        <cb-enabled>true</cb-enabled>
+        <cb-calls>10</cb-calls>
+        <cb-millis>60000</cb-millis>
+    </service-profile>
+
+    <service-profile service-profile-id="gmo_postpayTransaction.prof">
+        <timeout-millis>100000</timeout-millis>
+        <rate-limit-enabled>true</rate-limit-enabled>
+        <rate-limit-calls>10</rate-limit-calls>
+        <rate-limit-millis>60000</rate-limit-millis>
+        <cb-enabled>true</cb-enabled>
+        <cb-calls>10</cb-calls>
+        <cb-millis>60000</cb-millis>
+    </service-profile>
+
+    <service-profile service-profile-id="gmo_rakutenIdCancel.prof">
+        <timeout-millis>100000</timeout-millis>
+        <rate-limit-enabled>true</rate-limit-enabled>
+        <rate-limit-calls>10</rate-limit-calls>
+        <rate-limit-millis>60000</rate-limit-millis>
+        <cb-enabled>true</cb-enabled>
+        <cb-calls>10</cb-calls>
+        <cb-millis>60000</cb-millis>
+    </service-profile>
+
+    <service-profile service-profile-id="gmo_rakutenIdChange.prof">
+        <timeout-millis>100000</timeout-millis>
+        <rate-limit-enabled>true</rate-limit-enabled>
+        <rate-limit-calls>10</rate-limit-calls>
+        <rate-limit-millis>60000</rate-limit-millis>
+        <cb-enabled>true</cb-enabled>
+        <cb-calls>10</cb-calls>
+        <cb-millis>60000</cb-millis>
+    </service-profile>
+
+    <service-profile service-profile-id="gmo_rakutenIdSales.prof">
+        <timeout-millis>100000</timeout-millis>
+        <rate-limit-enabled>true</rate-limit-enabled>
+        <rate-limit-calls>10</rate-limit-calls>
+        <rate-limit-millis>60000</rate-limit-millis>
+        <cb-enabled>true</cb-enabled>
+        <cb-calls>10</cb-calls>
+        <cb-millis>60000</cb-millis>
+    </service-profile>
+
+    <service-profile service-profile-id="gmo_savecard.prof">
+        <timeout-millis>100000</timeout-millis>
+        <rate-limit-enabled>false</rate-limit-enabled>
+        <rate-limit-calls>0</rate-limit-calls>
+        <rate-limit-millis>0</rate-limit-millis>
+        <cb-enabled>false</cb-enabled>
+        <cb-calls>0</cb-calls>
+        <cb-millis>0</cb-millis>
+    </service-profile>
+
+    <service-profile service-profile-id="gmo_savemember.prof">
+        <timeout-millis>100000</timeout-millis>
+        <rate-limit-enabled>false</rate-limit-enabled>
+        <rate-limit-calls>0</rate-limit-calls>
+        <rate-limit-millis>0</rate-limit-millis>
+        <cb-enabled>false</cb-enabled>
+        <cb-calls>0</cb-calls>
+        <cb-millis>0</cb-millis>
+    </service-profile>
+
+    <service-profile service-profile-id="gmo_searchcard.prof">
+        <timeout-millis>100000</timeout-millis>
+        <rate-limit-enabled>false</rate-limit-enabled>
+        <rate-limit-calls>0</rate-limit-calls>
+        <rate-limit-millis>0</rate-limit-millis>
+        <cb-enabled>false</cb-enabled>
+        <cb-calls>0</cb-calls>
+        <cb-millis>0</cb-millis>
+    </service-profile>
+
+    <service-profile service-profile-id="gmo_searchmember.prof">
+        <timeout-millis>100000</timeout-millis>
+        <rate-limit-enabled>false</rate-limit-enabled>
+        <rate-limit-calls>0</rate-limit-calls>
+        <rate-limit-millis>0</rate-limit-millis>
+        <cb-enabled>false</cb-enabled>
+        <cb-calls>0</cb-calls>
+        <cb-millis>0</cb-millis>
+    </service-profile>
+
+    <service-profile service-profile-id="gmo_securetran.prof">
+        <timeout-millis>100000</timeout-millis>
+        <rate-limit-enabled>false</rate-limit-enabled>
+        <rate-limit-calls>0</rate-limit-calls>
+        <rate-limit-millis>0</rate-limit-millis>
+        <cb-enabled>false</cb-enabled>
+        <cb-calls>0</cb-calls>
+        <cb-millis>0</cb-millis>
+    </service-profile>
+
+    <service service-id="GMO.AlterTransaction">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix/>
+        <comm-log-enabled>false</comm-log-enabled>
+        <mock-mode-enabled>false</mock-mode-enabled>
+        <profile-id>gmo_alterTransaction.prof</profile-id>
+        <credential-id>gmo_alterTransaction.cred</credential-id>
+    </service>
+
+    <service service-id="GMO.DeleteCard">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix/>
+        <comm-log-enabled>false</comm-log-enabled>
+        <mock-mode-enabled>false</mock-mode-enabled>
+        <profile-id>gmo_deletecard.prof</profile-id>
+        <credential-id>gmo_deletecard.cred</credential-id>
+    </service>
+
+    <service service-id="GMO.EntryTranRakutenId">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix/>
+        <comm-log-enabled>false</comm-log-enabled>
+        <mock-mode-enabled>false</mock-mode-enabled>
+        <profile-id>gmo_entryTranRakutenId.prof</profile-id>
+        <credential-id>gmo_entryTranRakutenId.cred</credential-id>
+    </service>
+
+    <service service-id="GMO.EntryTransaction">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix/>
+        <comm-log-enabled>false</comm-log-enabled>
+        <mock-mode-enabled>false</mock-mode-enabled>
+        <profile-id>gmo_entryTransaction.prof</profile-id>
+        <credential-id>gmo_entryTransaction.cred</credential-id>
+    </service>
+
+    <service service-id="GMO.ExecTranRakutenId">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix/>
+        <comm-log-enabled>false</comm-log-enabled>
+        <mock-mode-enabled>false</mock-mode-enabled>
+        <profile-id>gmo_execTranRakutenId.prof</profile-id>
+        <credential-id>gmo_execTranRakutenId.cred</credential-id>
+    </service>
+
+    <service service-id="GMO.ExecTransaction">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix/>
+        <comm-log-enabled>false</comm-log-enabled>
+        <mock-mode-enabled>false</mock-mode-enabled>
+        <profile-id>gmo_execTransaction.prof</profile-id>
+        <credential-id>gmo_execTransaction.cred</credential-id>
+    </service>
+
+    <service service-id="GMO.PostpayMCTransaction">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix/>
+        <comm-log-enabled>false</comm-log-enabled>
+        <mock-mode-enabled>false</mock-mode-enabled>
+        <profile-id>gmo_postpayMCTransaction.prof</profile-id>
+        <credential-id>gmo_postpayMCTransaction.cred</credential-id>
+    </service>
+
+    <service service-id="GMO.PostpayPdRequest">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix/>
+        <comm-log-enabled>false</comm-log-enabled>
+        <mock-mode-enabled>false</mock-mode-enabled>
+        <profile-id>gmo_postpayPdRequest.prof</profile-id>
+        <credential-id>gmo_postpayPdReqest.cred</credential-id>
+    </service>
+
+    <service service-id="GMO.PostpayTransaction">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix/>
+        <comm-log-enabled>false</comm-log-enabled>
+        <mock-mode-enabled>false</mock-mode-enabled>
+        <profile-id>gmo_postpayTransaction.prof</profile-id>
+        <credential-id>gmo_postpayTransaction.cred</credential-id>
+    </service>
+
+    <service service-id="GMO.RakutenIdCancel">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix/>
+        <comm-log-enabled>false</comm-log-enabled>
+        <mock-mode-enabled>false</mock-mode-enabled>
+        <profile-id>gmo_rakutenIdCancel.prof</profile-id>
+        <credential-id>gmo_rakutenIdCancel.cred</credential-id>
+    </service>
+
+    <service service-id="GMO.RakutenIdChange">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix/>
+        <comm-log-enabled>false</comm-log-enabled>
+        <mock-mode-enabled>false</mock-mode-enabled>
+        <profile-id>gmo_rakutenIdChange.prof</profile-id>
+        <credential-id>gmo_rakutenIdChange.cred</credential-id>
+    </service>
+
+    <service service-id="GMO.RakutenIdSales">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix/>
+        <comm-log-enabled>false</comm-log-enabled>
+        <mock-mode-enabled>false</mock-mode-enabled>
+        <profile-id>gmo_rakutenIdSales.prof</profile-id>
+        <credential-id>gmo_rakutenIdSales.cred</credential-id>
+    </service>
+
+    <service service-id="GMO.SaveCard">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix/>
+        <comm-log-enabled>false</comm-log-enabled>
+        <mock-mode-enabled>false</mock-mode-enabled>
+        <profile-id>gmo_savecard.prof</profile-id>
+        <credential-id>gmo_savecard.cred</credential-id>
+    </service>
+
+    <service service-id="GMO.SaveMember">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix/>
+        <comm-log-enabled>false</comm-log-enabled>
+        <mock-mode-enabled>false</mock-mode-enabled>
+        <profile-id>gmo_savemember.prof</profile-id>
+        <credential-id>gmo_savemember.cred</credential-id>
+    </service>
+
+    <service service-id="GMO.SearchCard">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix/>
+        <comm-log-enabled>false</comm-log-enabled>
+        <mock-mode-enabled>false</mock-mode-enabled>
+        <profile-id>gmo_searchcard.prof</profile-id>
+        <credential-id>gmo_searchcard.cred</credential-id>
+    </service>
+
+    <service service-id="GMO.SearchMember">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix/>
+        <comm-log-enabled>false</comm-log-enabled>
+        <mock-mode-enabled>false</mock-mode-enabled>
+        <profile-id>gmo_searchmember.prof</profile-id>
+        <credential-id>gmo_searchmember.cred</credential-id>
+    </service>
+
+    <service service-id="GMO.SecureTran">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix/>
+        <comm-log-enabled>false</comm-log-enabled>
+        <mock-mode-enabled>false</mock-mode-enabled>
+        <profile-id>gmo_securetran.prof</profile-id>
+        <credential-id>gmo_securetran.cred</credential-id>
+    </service>
+
+</services>

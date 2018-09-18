@@ -1,0 +1,9 @@
+.gmo-add-credit-not-active{
+	pointer-events: none;
+   cursor: default;
+}
+@media screen and (min-width: 320px) {
+    .primary-focus .mobile-primary-content-checkout {
+        float: none !important;
+    }
+}

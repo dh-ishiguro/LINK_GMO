@@ -1,0 +1,59 @@
+/**
+ * EntryTranRakutenId.ds
+ *
+ * This script attempts to get accessID,accessPass.
+ *
+ * @input Order : dw.order.Order
+ * @input JobCd : String
+ * @output AccessID : String
+ * @output AccessPass : String
+*/
+importPackage( dw.system );
+importPackage( dw.net );
+importPackage( dw.web );
+importPackage( dw.crypto );
+importPackage( dw.util );
+importPackage( dw.svc );
+
+var apiCommon = require('./ApiCommon');
+
+function execute( pdict : PipelineDictionary ) : Number
+{
+	let logger = Logger.getLogger("GMO","GMO");
+	let paramRequest;
+    let result:Result;
+	try {
+		let shopID = Site.getCurrent().getCustomPreferenceValue('gmo_shopID');
+		let shopPass = Site.getCurrent().getCustomPreferenceValue('gmo_shopPass');
+		var totalAmount = pdict.PaymentInstruments.paymentTransaction.amount.value;
+
+		paramRequest	= 'ShopID=' + shopID + '&'
+						+ 'ShopPass=' + shopPass + '&'
+						+ 'OrderID=' +  pdict.Order.orderNo + '&'
+						+ 'JobCd=' + pdict.JobCd + '&'
+						+ 'Amount=' + Math.round(totalAmount);
+
+	    var objrespone = apiCommon.callApi("GMO.EntryTranRakutenId", paramRequest);
+
+		if(objrespone.hasOwnProperty('AccessID') && objrespone.hasOwnProperty('AccessPass')){
+			pdict.AccessID = objrespone['AccessID'];
+			pdict.AccessPass = objrespone['AccessPass'];
+			logger.debug("API EntryTranRakutenId.idPass : entry order ID {0} success !; order status : Open!; payment status : Not Paid!"
+												, pdict.Order.orderNo);
+		}else{
+			logger.debug("API EntryTranRakutenId.idPass : entry order ID {0} fail !; order status : Open!; payment status : Not Paid!; ErrCode : {1}; ErrInfo : {2}"
+												, pdict.Order.orderNo
+												, objrespone["ErrCode"]
+												, objrespone["ErrInfo"]);
+	    	return PIPELET_ERROR;
+		}
+	} catch(e) {
+		logger.debug("API EntryTranRakutenId.idPass : entry order ID {0} error !; order status : Open! ; payment status : Not Paid!; paramRequest:{1}; result:{2}"
+											, pdict.Order.orderNo
+											, paramRequest
+											, result.object.text);
+		return PIPELET_ERROR;
+	}
+	return PIPELET_NEXT;
+}
+exports.execute = execute;

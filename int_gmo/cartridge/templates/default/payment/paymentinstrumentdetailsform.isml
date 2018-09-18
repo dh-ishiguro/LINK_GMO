@@ -1,0 +1,23 @@
+<!--- TEMPLATENAME: paymentinstrumentdetailsform.isml --->
+<isinputfield formfield="${pdict.CurrentForms.paymentinstruments.creditcards.newcreditcard.type}" type="select"/>
+                        <isinputfield formfield="${pdict.CurrentForms.paymentinstruments.creditcards.newcreditcard.number}"  type="input" maxlength="16" size="17" attribute1="autocomplete" value1="off"/>
+                        <div class="form-label-text"><span class="required-indicator">&#8226; </span>${Resource.msg('billing.creditcardlistexpdate', 'checkout', null)}</div>
+                        <isinputfield formfield="${pdict.CurrentForms.paymentinstruments.creditcards.newcreditcard.expiration.month}" rowclass="month" type="select"/>
+                        <isinputfield formfield="${pdict.CurrentForms.paymentinstruments.creditcards.newcreditcard.expiration.year}" rowclass="year" type="select"/>
+                        <div style="clear: both;"></div>
+                        <isinputfield formfield="${pdict.CurrentForms.paymentinstruments.creditcards.newcreditcard.cvn}" type="input" maxlength="4" rowclass="cvn" />
+
+                        <input type="hidden" value="${holderName}" id="cardholderName" name="cardholderName" />
+                        <input type="hidden" value="" id="crdCardtoken" name="crdCardtoken" />
+                        <input type="hidden" name="${pdict.CurrentForms.paymentinstruments.creditcards.create.htmlName}" value="${Resource.msg('global.apply','locale',null)}"/>
+                        <div class="form-row form-row-button">
+                            <button id="applyBtn" type="submit" name="${pdict.CurrentForms.paymentinstruments.creditcards.create.htmlName}" value="${Resource.msg('global.apply','locale',null)}">
+                                ${Resource.msg('global.apply', 'locale', null)}
+                            </button>
+                            <button class="cancel cancel-button" type="submit" name="${pdict.CurrentForms.paymentinstruments.creditcards.cancel.htmlName}" value="${Resource.msg('global.cancel','locale',null)}">
+                                ${Resource.msg('global.cancel', 'locale', null)}
+                            </button>
+                        </div>
+                        <!-- <input type="hidden" name="${pdict.CurrentForms.paymentinstruments.secureKeyHtmlName}" value="${pdict.CurrentForms.paymentinstruments.secureKeyValue}"/> -->
+                        <input type="hidden" name="${dw.web.CSRFProtection.getTokenName()}" value="${dw.web.CSRFProtection.generateToken()}"/>
+

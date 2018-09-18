@@ -1,0 +1,6 @@
+{
+	"init": ["./cartridge/scripts/init/httpExecTranInit.ds",
+			 "./cartridge/scripts/init/httpAlterTranInit.ds",
+			 "./cartridge/scripts/init/httpSearchCardInit.ds"
+			]
+}

@@ -1,0 +1,31 @@
+v2.0.2
+ - GMO API 楽天ペイのURLをmetadataから取得するように修正
+
+v2.0.1
+ - GMO APIの戻り値パース処理修正
+ - CartModelのGMO後払い時判定処理修正
+
+v2.0.0
+ - 機能追加: GMO後払い
+
+v1.0.5
+ - カートリッジ名変更 bm_orderhistory → bm_gmo
+ - Payment Insturment名変更 GMO PAYMENT → GMO_PAYMENT
+ - CRLF修正
+
+v1.0.4
+ - 審査指摘に従って、int_gmoからSiteGenesisファイルを削除
+
+v1.0.3
+ - クレジットカード決済のキャプチャーでエラーが返る問題を修正(v1.0.1関連)
+   - int_gmo\cartridge\scripts\gmo\AlterTran.ds
+
+v1.0.2
+ - 楽天の呼び出しでエラーが返る問題を修正
+   - app_gmo_controllers\cartridge\controllers\COPlaceOrder.js
+
+v1.0.1
+ - 利用金額で税金が２重に見える件を修正
+   - bm_orderhistory\cartridge\controllers\Order.js
+   - int_gmo\cartridge\scripts\gmo\EntryTran.ds
+   - int_gmo\cartridge\scripts\gmo\EntryTranRakutenId.ds

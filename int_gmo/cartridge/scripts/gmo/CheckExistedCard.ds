@@ -1,0 +1,54 @@
+/**
+ * CheckExistedCard.ds
+ *
+ * This script attempts to check credit card exist
+ * then change cards into demandware format
+ *
+ * @input CustomerNo : String
+ * @input CardNo : String
+ * @output isExistCard : Boolean
+ * @output CardSeq : String
+*/
+importPackage( dw.system );
+importPackage( dw.net );
+importPackage( dw.web );
+importPackage( dw.crypto );
+importPackage( dw.util );
+importPackage( dw.svc );
+
+var apiCommon = require('./ApiCommon');
+
+function execute( pdict : PipelineDictionary ) : Number
+{
+   	 try {
+   	 	pdict.isExistCard=false;
+   		var siteID = Site.getCurrent().getCustomPreferenceValue('gmo_siteID');
+		var sitePass = Site.getCurrent().getCustomPreferenceValue('gmo_sitePass');
+	    var paramRequest = 'SiteID=' + siteID + '&'
+	                       + 'SitePass=' + sitePass + '&'
+	                       + 'MemberID=' +  pdict.CustomerNo;
+
+	    var objrespone = apiCommon.callApi("GMO.SearchCard", paramRequest);
+
+	    if(objrespone.hasOwnProperty('CardNo')){
+	    	var arrCardNo = objrespone['CardNo'].split('|');
+			var arrCardSeq = objrespone['CardSeq'].split('|');
+	    	for(let j in arrCardNo){
+	    		if(arrCardNo[j]==pdict.CardNo){
+	    			pdict.isExistCard=true;
+	    			pdict.CardSeq = arrCardSeq[j];
+	    			break;
+	    		}
+	    	}
+	    	Logger.getLogger("GMO","GMO").debug("API SearchCard.idPass : search card {0} of member {1} success !!!",pdict.CardNo,pdict.CustomerNo);
+	    }else{
+	    	Logger.getLogger("GMO","GMO").debug("API SearchCard.idPass : search card {0} of member {1} not found !!! ErrInfo={2}",pdict.CardNo,pdict.CustomerNo, objrespone['ErrInfo']);
+	    	return PIPELET_ERROR;
+	    }
+    } catch(e) {
+    		Logger.getLogger("GMO","GMO").debug("API SearchCard.idPass : search card {0} of member {1} error !!!",pdict.CardNo,pdict.CustomerNo);
+		return PIPELET_ERROR;
+	}
+  return PIPELET_NEXT;
+}
+exports.execute = execute;

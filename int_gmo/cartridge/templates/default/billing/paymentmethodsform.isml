@@ -1,0 +1,131 @@
+<!--- TEMPLATENAME: paymentmethodsformform.isml --->
+<isscript>
+	if (pdict.gmoCreditCard !=null && !empty(pdict.gmoCreditCard.number)) {
+		pdict.CurrentForms.billing.paymentMethods.creditCard.number.setValue(pdict.gmoCreditCard.number);
+		pdict.CurrentForms.billing.paymentMethods.creditCard.type.setHtmlValue(pdict.gmoCreditCard.type);
+
+		var payinfo = "";
+		if (pdict.gmoCreditPayInfo.payinfo) {
+			payinfo = pdict.gmoCreditPayInfo.payinfo;
+		}
+		pdict.CurrentForms.billing.paymentMethods.creditCard.payinfo.setHtmlValue(payinfo);
+		var paytime = "";
+		if (pdict.gmoCreditPayInfo.paytime) {
+			paytime = pdict.gmoCreditPayInfo.paytime;
+		}
+		pdict.CurrentForms.billing.paymentMethods.creditCard.paytime.setHtmlValue(paytime);
+
+		pdict.CurrentForms.billing.paymentMethods.creditCard.expiration.month.setHtmlValue(pdict.gmoCreditCard.month);
+		pdict.CurrentForms.billing.paymentMethods.creditCard.expiration.year.setHtmlValue(pdict.gmoCreditCard.year);
+	}
+
+	var disabled = {
+		disabled: 'disabled'
+	};
+
+	var maxlength = {
+		maxlength: '4'
+	};
+</isscript>
+	<input type="hidden" name="validateError" id="validateError" value="${pdict.validateError!=null?pdict.validateError:'0'}" />
+	<isif condition="${!empty(pdict.ApplicableCreditCards) && pdict.CurrentSession.custom.gmoSelectedCard != 'AddNewCard'}">
+		<input type="hidden" name="hidCardSeq" id="hidCardSeq" value="${pdict.CurrentSession.custom.hiddenCardSeq!=null?pdict.CurrentSession.custom.hiddenCardSeq:''}" />
+		<input type="hidden" name="hidCardType" id="hidCardType">
+		<input type="hidden" name="hidCardPayInfo" id="hidCardPayInfo">
+		<input type="hidden" name="hidCardPayTime" id="hidCardPayTime">
+		<input type="hidden" name="hidCardNo" id="hidCardNo">
+		<input type="hidden" name="hidCardMonth" id="hidCardMonth">
+		<input type="hidden" name="hidCardYear" id="hidCardYear">
+		<input type="hidden" name="hidCard3dSecure" id="hidCard3dSecure">
+		<input type="hidden" name="cardType" id="cardType" value="${pdict.CurrentForms.billing.paymentMethods.creditCard.type.htmlValue}" />
+		<input type="hidden" name="cardInfo" id="cardInfo" value="${pdict.CurrentForms.billing.paymentMethods.creditCard.payinfo.htmlValue}" />
+		<input type="hidden" name="cardTime" id="cardTime" value="${pdict.CurrentForms.billing.paymentMethods.creditCard.paytime.htmlValue}" />
+		<isinputfield formfield="${pdict.CurrentForms.billing.paymentMethods.creditCard.type}" type="select" attributes="${disabled}" />
+
+		<isinputfield formfield="${pdict.CurrentForms.billing.paymentMethods.creditCard.payinfo}" type="select" />
+
+		<isinputfield formfield="${pdict.CurrentForms.billing.paymentMethods.creditCard.paytime}" type="select" />
+
+		<isinputfield formfield="${pdict.CurrentForms.billing.paymentMethods.creditCard.number}" type="input" attributes="${disabled}" />
+
+		<div class="form-label-text"><span class="required-indicator">${Resource.msg('billing.requiredindicator','checkout',null)}</span>${Resource.msg('billing.creditcardlistexpdate', 'checkout', null)}</div>
+
+		<isinputfield formfield="${pdict.CurrentForms.billing.paymentMethods.creditCard.expiration.month}" type="select" rowclass="month" attributes="${disabled}" />
+
+		<isinputfield formfield="${pdict.CurrentForms.billing.paymentMethods.creditCard.expiration.year}" type="select"  rowclass="year" attributes="${disabled}" />
+
+		<isinputfield formfield="${pdict.CurrentForms.billing.paymentMethods.creditCard.pay3dsecure}" type="hidden" />
+	<iselse/>
+		<isif condition="${pdict.CurrentSession.custom.gmoSelectedCard == 'AddNewCard'}">
+			<input type="hidden" name="hidCardSeq" id="hidCardSeq" value="${pdict.CurrentSession.custom.gmoSelectedCard}" />
+		<iselse/>
+			<input type="hidden" name="hidCardSeq" id="hidCardSeq" value="${pdict.CurrentSession.custom.hiddenCardSeq!=null?pdict.CurrentSession.custom.hiddenCardSeq:''}" />
+		</isif>
+		<input type="hidden" name="cardType" id="cardType" value="${pdict.CurrentForms.billing.paymentMethods.creditCard.type.htmlValue}" />
+		<input type="hidden" name="cardInfo" id="cardInfo" value="${pdict.CurrentForms.billing.paymentMethods.creditCard.payinfo.htmlValue}" />
+		<input type="hidden" name="cardTime" id="cardTime" value="${pdict.CurrentForms.billing.paymentMethods.creditCard.paytime.htmlValue}" />
+		<input type="hidden" name="hidCardType" id="hidCardType">
+		<input type="hidden" name="hidCardPayInfo" id="hidCardPayInfo">
+		<input type="hidden" name="hidCardPayTime" id="hidCardPayTime">
+		<input type="hidden" name="hidCardNo" id="hidCardNo">
+		<input type="hidden" name="hidCardMonth" id="hidCardMonth">
+		<input type="hidden" name="hidCardYear" id="hidCardYear">
+		<input type="hidden" name="hidCard3dSecure" id="hidCard3dSecure">
+		<isinputfield formfield="${pdict.CurrentForms.billing.paymentMethods.creditCard.type}" type="select"/>
+
+		<isinputfield formfield="${pdict.CurrentForms.billing.paymentMethods.creditCard.payinfo}" type="select" />
+
+		<isinputfield formfield="${pdict.CurrentForms.billing.paymentMethods.creditCard.paytime}" type="select" />
+
+		<isinputfield formfield="${pdict.CurrentForms.billing.paymentMethods.creditCard.number}" type="input"/>
+
+		<div class="form-label-text"><span class="required-indicator">${Resource.msg('billing.requiredindicator','checkout',null)}</span>${Resource.msg('billing.creditcardlistexpdate', 'checkout', null)}</div>
+
+		<isinputfield formfield="${pdict.CurrentForms.billing.paymentMethods.creditCard.expiration.month}" type="select" rowclass="month"/>
+
+		<isinputfield formfield="${pdict.CurrentForms.billing.paymentMethods.creditCard.expiration.year}" type="select"  rowclass="year"/>
+
+		<isinputfield formfield="${pdict.CurrentForms.billing.paymentMethods.creditCard.pay3dsecure}" type="hidden" />
+	</isif>
+	<isscript>
+		var help = {
+			label: Resource.msg('billing.linkcvn', 'checkout', null),
+			cid: 'checkout-security-code'
+		};
+	</isscript>
+	<isinputfield formfield="${pdict.CurrentForms.billing.paymentMethods.creditCard.cvn}" type="input" rowclass="cvn" attributes="${maxlength}" help="${help}"/>
+	<!-- Data to be used with the selected credit card -->
+	<div data-method="gmo_pay_info" style="display: none;">
+		<isloop items="${pdict.gmoPayInfo.idx}" var="creditBrand">
+		<div name="${creditBrand}">
+			<div name="gmo_payment_method">
+				<option class="select-option" label="${pdict.gmoPayResource.single.name}" keyword="${pdict.gmoPayResource.single.keyword}" value="${pdict.gmoPayResource.single.value}">${pdict.gmoPayResource.single.name}</option>
+				<isif condition="${pdict.gmoPayInfo.dat[creditBrand].gmo_use_installments}">
+				<option class="select-option" label="${pdict.gmoPayResource.installments.name}" keyword="${pdict.gmoPayResource.installments.keyword}" value="${pdict.gmoPayResource.installments.value}">${pdict.gmoPayResource.installments.name}</option>
+				</isif>
+				<isif condition="${pdict.gmoPayInfo.dat[creditBrand].gmo_use_bonus}">
+				<option class="select-option" label="${pdict.gmoPayResource.bonus.name}" keyword="${pdict.gmoPayResource.bonus.keyword}" value="${pdict.gmoPayResource.bonus.value}">${pdict.gmoPayResource.bonus.name}</option>
+				</isif>
+				<isif condition="${pdict.gmoPayInfo.dat[creditBrand].gmo_use_bonus && pdict.gmoPayInfo.dat[creditBrand].gmo_use_installments_bonus}">
+				<option class="select-option" label="${pdict.gmoPayResource.installments_bonus.name}" keyword="${pdict.gmoPayResource.installments_bonus.keyword}" value="${pdict.gmoPayResource.installments_bonus.value}">${pdict.gmoPayResource.installments_bonus.name}</option>
+				</isif>
+				<isif condition="${pdict.gmoPayInfo.dat[creditBrand].gmo_use_revolving}">
+				<option class="select-option" label="${pdict.gmoPayResource.revolving.name}" keyword="${pdict.gmoPayResource.revolving.keyword}" value="${pdict.gmoPayResource.revolving.value}">${pdict.gmoPayResource.revolving.name}</option>
+				</isif>
+			</div>
+			<isif condition="${pdict.gmoPayInfo.dat[creditBrand].gmo_use_installments && pdict.gmoPayInfo.dat[creditBrand].gmo_number_of_installments}">
+			<div name="gmo_number_of_installments">
+				<isloop items="${pdict.gmoPayInfo.dat[creditBrand].gmo_number_of_installments}" var="installments">
+				<option class="select-option" label="${installments} ${Resource.msg('creditcard.installments_unit','forms',null)}" value="${installments}">${installments} ${Resource.msg('creditcard.installments_unit','forms',null)}</option>
+				</isloop>
+			</div>
+			</isif>
+			<isif condition="${pdict.gmoPayInfo.dat[creditBrand].gmo_use_bonus && pdict.gmoPayInfo.dat[creditBrand].gmo_use_installments_bonus}">
+			<div name="gmo_number_of_installments_bonus">
+				<option class="select-option" label="2 ${Resource.msg('creditcard.installments_unit','forms',null)}" value="2">2 ${Resource.msg('creditcard.installments_unit','forms',null)}</option>
+			</div>
+			</isif>
+			<div name="gmo_use_3d_secure">${pdict.gmoPayInfo.dat[creditBrand].gmo_use_3d_secure}</div>
+		</div>
+		</isloop>
+	</div>

@@ -1,0 +1,529 @@
+<isdecorate template="application/MenuFrame">
+<iscontent type="text/html" charset="UTF-8">
+<isinclude template="inc/Modules"/>
+
+<style type="text/css">
+    .fielditem2{float:left; text-align:left;padding-left:11%;font-weight:normal;}
+    .infobox_item{width:21%;padding-left:2%;}
+    .table_detail{background-color: #FFFFFF;}
+    a.pagecursorbtn{text-decoration: none;}
+</style>
+
+<h1 class="overview_title" style="font-weight:normal; border-bottom: 1px solid #DADADA; margin-bottom: 0;">Authorization Orders</h1>
+
+<!-- Get confirm message when user cancel order  -->
+<isif condition="${pdict.alert && !pdict.cancelFailed}">
+
+    <table width="100%" cellspacing="0" cellpadding="4" border="0" class="confirm_box w e s">
+        <tbody>
+            <tr>
+            <td class="error_icon e"><img width="16" height="15" border="0" alt="" src="/on/demandware.static/Sites-Site/-/default/v1421111154679/images/confirmation.gif"></td>
+            <td width="100%" class="confirm"><p>Are you sure that you want to execute the following action for these items: ${pdict.alert}?</p></td>
+            <td nowrap="nowrap">
+                <form action="${URLUtils.url('Order-AlterTranAuthorization')}" name="submitCancelForm" method="post">
+                <table cellspacing="0" cellpadding="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td class="button"><button class="button" name="capture" type="submit">OK</button></td>
+                            <td>&nbsp;</td>
+                            <td class="button"><button onclick="window.location = '${URLUtils.url('Order-History')}'" class="button" name="cancel" type="reset">Cancel</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                </form>
+            </td>
+            </tr>
+        </tbody>
+    </table>
+</isif>
+
+<!-- Get confirm message when user cancel order failed  -->
+<isif condition="${pdict.cancelFailed}">
+    <table width="100%" cellspacing="0" cellpadding="4" border="0" class="error_box w e s">
+        <tbody>
+            <tr>
+                <td class="error_icon e"><img width="16" height="15" border="0" alt="" src="/on/demandware.static/Sites-Site/-/default/v1421111154679/images/error.gif"></td>
+                <td width="100%" class="error"><p>You have not selected any order.</p>
+                <p>Use the checkboxes to select the order you want, and then click <b>Capture</b> or <b>Cancel Authorization</b> again.</p></td>
+            </tr>
+        </tbody>
+    </table>
+</isif>
+
+<isif condition="${pdict.hasError==true}">
+    <table width="100%" cellspacing="0" cellpadding="4" border="0" class="error_box w e s">
+        <tbody>
+            <tr>
+                <td class="error_icon e"><img width="16" height="15" border="0" alt="" src="/on/demandware.static/Sites-Site/-/default/v1421111154679/images/error.gif"></td>
+                <td width="100%" class="error"><p>You have any error when ${pdict.CurrentSession.custom.alertSuccess}.</p>
+            </tr>
+        </tbody>
+    </table>
+
+</isif>
+<isif condition="${pdict.hasError==false}">
+
+
+        <table width="100%" cellspacing="0" cellpadding="4" border="0" class="success_box w e s">
+        <tbody>
+            <tr>
+                <td class="success_icon e"><img width="16" height="15" border="0" alt="" src="/on/demandware.static/Sites-Site/-/default/v1421111154679/images/success.gif"></td>
+                <td width="100%" class="success">
+                    <p style="margin-bottom: 5px;">Your ${pdict.CurrentSession.custom.alertSuccess} orders was successful.</p>
+                </td>
+            </tr>
+        </tbody>
+        </table>
+
+</isif>
+<h2 class="table_title_description" style="font-weight:normal;">
+    This Business Manager Module gives you the possibility to capture or cancel Authorization the order.
+</h2>
+
+<isscript>
+    var result = require('~/../int_gmo/cartridge/controllers/GMO_PAYMENT').IsEnableGMO();
+</isscript>
+
+<table style="width:100%" class="n w e s aldi">
+    <tr style="vertical-align: top;float:left; width:100%;" class="infobox">
+        <th class="infobox_title_search" style="padding:10px 0 5px 5px;">Select the order to capture or cancel Authorization.</th>
+    </tr>
+    <tr>
+        <td class="infobox" style="vertical-align: top;padding-bottom:10px;">
+            <form action="${URLUtils.url('Order-History')}" name="cancelOrderForm" method="post">
+                <table style="width:100%; padding-top:15px;" cellspacing="0" cellpadding="0">
+                    <tr class="inputboxstyle">
+                        <isinputfield formfield="${pdict.CurrentForms.searchorder.orderNoSearch}" type="input" attribute1="style" value1="width:200px;"/>
+                        <td    style="width:68%">
+                            <input class="button" id="search" name="search" type="submit" value="Search Order" />
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </td>
+    </tr>
+    <isif condition="${pdict.SearchedOrdersCount == 0}">
+    <tr>
+        <td>
+            <table width="100%" cellspacing="0" cellpadding="0" style="border-top: 1px solid #DADADA">
+                <tbody>
+                    <tr>
+                        <td width="100%" class="table_detail" style="color:red;">
+                            <p style="padding-top: 15px">There are no orders.</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    </isif>
+</table>
+<isif condition="${pdict.OrdersUnpagedCount > 0}">
+<form action="${URLUtils.url('Order-History')}" name="listOrderForm" method="post">
+    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+        <tr>
+            <td class="aldi" style="color:red;border:none; width:100%;"  width="100%" colspan="3">
+                <table width="100%" cellspacing="0" cellpadding="0" border="0" style="border-top:1px solid #dadada">
+                    <tbody>
+                        <tr>
+
+                            <td nowrap="nowrap" class="table_header w e s center">
+                                <div id="A">
+                                    <table width="70" cellspacing="0" cellpadding="0" border="0" class="table_header center">
+                                        <tbody>
+                                            <tr>
+                                                <td nowrap="nowrap">
+                                                    <a class="tableheader" href="javascript:selectAll('listOrderForm');">Select All</a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div style="display:none" id="B">
+                                    <table width="70" cellspacing="0" cellpadding="0" border="0" class="table_header center">
+                                        <tbody>
+                                            <tr>
+                                                <td nowrap="nowrap">
+                                                <a class="tableheader" href="javascript:selectAll('listOrderForm');">Clear All</a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </td>
+
+                            <td class="table_header w e s">Number</td>
+                            <td nowrap="nowrap" class="table_header e s">Order Date</td>
+                            <td nowrap="nowrap" class="table_header e s">Create By</td>
+                            <td nowrap="nowrap" class="table_header e s">Registration Status</td>
+                            <td nowrap="nowrap" class="table_header e s">Customer</td>
+                            <td nowrap="nowrap" class="table_header e s">Email</td>
+                            <td nowrap="nowrap" class="table_header e s">Total</td>
+                            <td nowrap="nowrap" class="table_header e s">Status</td>
+                            <isif condition="${result.isEnableRakutenId==true || result.isEnablePostpay==true}">
+                                <td nowrap="nowrap" class="table_header e s">PayType</td>
+                            </isif>
+                            <isif condition="${result.isEnablePostpay==true}">
+                                <td nowrap="nowrap" class="table_header e s">TransporterID</td>
+                                <td nowrap="nowrap" class="table_header e s">Tracking&#35;</td>
+                            </isif>
+                            <isif condition="${result.isEnableRakutenId==true || result.isEnablePostpay==true}">
+                                <td nowrap="nowrap" class="table_header e s center">Amount change</td>
+                            </isif>
+                        </tr>
+                        <isscript>
+                            var counter = 0;
+                        </isscript>
+                        <isloop iterator="${pdict.OrderPagingModel.pageElements}" var="order">
+                        <tr>
+                            <td nowrap="nowrap" class="table_detail w e s center">
+                                <isif condition="${pdict.listChoice && pdict.listChoice.contains(new String(order.orderNo))}">
+                                    <input type="checkbox" value="${order.orderNo}" checked="checked" name="choice" >
+                                <iselse>
+                                    <input type="checkbox" value="${order.orderNo}" name="choice" >
+                                </isif>
+                            </td>
+                            <td nowrap="nowrap" class="table_detail w e s"><a class="table_detail_link" href="${URLUtils.url('ViewOrder_52-FindByNumber', 'status', 'open', 'OrderID', order.UUID )}">${order.orderNo}</a></td>
+                            <td nowrap="nowrap" class="table_detail e s"><isprint value="${order.creationDate}"  formatter="dd/MM/yyyy h:mm:ss a"></td>
+                            <td nowrap="nowrap" class="table_detail e s">${order.createdBy}</td>
+                            <td nowrap="nowrap" class="table_detail e s">
+                                <isscript>
+                                    var group = order.getCustomer().getCustomerGroups().iterator();
+                                    var html ='';
+                                    while(group.hasNext()){
+                                        g = group.next();
+                                        if(g.getID() != 'Everyone')
+                                            html += g.getID().toString()+'<br />';
+                                    }
+                                 </isscript>
+                             <isprint value="${html}" encoding="jshtml"  />
+                            </td>
+                            <td nowrap="nowrap" class="table_detail e s">${order.getCustomerName()}</td>
+                            <td nowrap="nowrap" class="table_detail e s">${order.getCustomerEmail()}</td>
+                            <td nowrap="nowrap" class="table_detail e s">${order.getTotalGrossPrice().toFormattedString()}</td>
+                            <td nowrap="nowrap" class="table_detail e s">
+                                <isscript>
+                                    var status = order.status.toString();
+                                    status = status.charAt(0).toUpperCase() + status.slice(1).toLowerCase()
+                                </isscript>
+                                ${status}
+                            </td>
+                            <isif condition="${result.isEnableRakutenId==true || result.isEnablePostpay==true}">
+                                <isscript>
+                                    var changeButton = false;
+                                    var paytype = "-";
+                                    var paymentInstruments = order.getPaymentInstruments();
+                                    if (paymentInstruments.length != 0)
+                                    {
+                                        let paymentMethod;
+                                        for each(p in paymentInstruments){
+                                            if( p.paymentMethod == "RAKUTENID" || p.paymentMethod == "GMOPOSTPAY" || p.METHOD_CREDIT_CARD.equals(p.paymentMethod) ) {
+                                                paymentMethod = p.paymentMethod;
+                                                break;
+                                            }
+                                        }
+                                        if(paymentMethod == "CREDIT_CARD" )
+                                        {
+                                            paytype = "Credit";
+                                            changeButton = false;
+                                        }
+                                        else if(paymentMethod == "RAKUTENID" )
+                                        {
+                                            paytype = "RakutenPay";
+                                            if(status == 'Failed' || status == 'Cancelled')
+                                            {
+                                                changeButton = false;
+                                            }
+                                            else
+                                            {
+                                                changeButton = true;
+                                            }
+                                        }
+                                        else if(paymentMethod == "GMOPOSTPAY" )
+                                        {
+                                            paytype = "GMOPostPay";
+                                            if(status == 'Failed' || status == 'Cancelled')
+                                            {
+                                                changeButton = false;
+                                            }
+                                            else
+                                            {
+                                                changeButton = true;
+                                            }
+                                        }
+                                    }
+                                </isscript>
+                                <td nowrap="nowrap" class="table_detail e s">
+                                    ${paytype}
+                                </td>
+                            </isif>
+                            <isif condition="${result.isEnablePostpay==true}">
+                                <td nowrap="nowrap" class="table_detail e s">
+                                    <isif condition="${paytype=='GMOPostPay'}">
+                                        <isscript>
+                                            var default_transporterid = dw.system.Site.getCurrent().getCustomPreferenceValue('gmo_postpay_pdcompanycode');
+                                            var isListTransporterId = false;
+                                            if (pdict.listTransporterId != null) {
+                                                if (pdict.listTransporterId.hasOwnProperty(order.orderNo)) {
+                                                    isListTransporterId = true;
+                                                }
+                                            }
+                                        </isscript>
+                                        <isif condition="${isListTransporterId}">
+                                            <select name="transporterId_${order.orderNo}">
+                                                <isif condition="${pdict.listTransporterId[order.orderNo]=='11'}">
+                                                    <option value="11" selected>11：SAGAWA</option>
+                                                    <iselse>
+                                                    <option value="11">11：SAGAWA</option>
+                                                </isif>
+                                                <isif condition="${pdict.listTransporterId[order.orderNo]=='12'}">
+                                                    <option value="12" selected>12：YAMATO</option>
+                                                    <iselse>
+                                                    <option value="12">12：YAMATO</option>
+                                                </isif>
+                                                <isif condition="${pdict.listTransporterId[order.orderNo]=='14'}">
+                                                    <option value="14" selected>14：SEINO</option>
+                                                    <iselse>
+                                                    <option value="14">14：SEINO</option>
+                                                </isif>
+                                                <isif condition="${pdict.listTransporterId[order.orderNo]=='15'}">
+                                                    <option value="15" selected>15：KAKITOME</option>
+                                                    <iselse>
+                                                    <option value="15">15：KAKITOME</option>
+                                                </isif>
+                                                <isif condition="${pdict.listTransporterId[order.orderNo]=='16'}">
+                                                    <option value="16" selected>16：YU-PACK</option>
+                                                    <iselse>
+                                                    <option value="16">16：YU-PACK</option>
+                                                </isif>
+                                                <isif condition="${pdict.listTransporterId[order.orderNo]=='18'}">
+                                                    <option value="18" selected>18：FUKUYAMA</option>
+                                                    <iselse>
+                                                    <option value="18">18：FUKUYAMA</option>
+                                                </isif>
+                                                <isif condition="${pdict.listTransporterId[order.orderNo]=='27'}">
+                                                    <option value="27" selected>27：ECO HAI</option>
+                                                    <iselse>
+                                                    <option value="27">27：ECO HAI</option>
+                                                </isif>
+                                                <isif condition="${pdict.listTransporterId[order.orderNo]=='28'}">
+                                                    <option value="28" selected>28：OTHER</option>
+                                                    <iselse>
+                                                    <option value="28">28：OTHER</option>
+                                                </isif>
+                                            </select>
+                                        <iselse>
+                                            <select name="transporterId_${order.orderNo}">
+                                                <isif condition="${default_transporterid=='11'}">
+                                                    <option value="11" selected>11：SAGAWA</option>
+                                                    <iselse>
+                                                    <option value="11">11：SAGAWA</option>
+                                                </isif>
+                                                <isif condition="${default_transporterid=='12'}">
+                                                    <option value="12" selected>12：YAMATO</option>
+                                                    <iselse>
+                                                    <option value="12">12：YAMATO</option>
+                                                </isif>
+                                                <isif condition="${default_transporterid=='14'}">
+                                                    <option value="14" selected>14：SEINO</option>
+                                                    <iselse>
+                                                    <option value="14">14：SEINO</option>
+                                                </isif>
+                                                <isif condition="${default_transporterid=='15'}">
+                                                    <option value="15" selected>15：KAKITOME</option>
+                                                    <iselse>
+                                                    <option value="15">15：KAKITOME</option>
+                                                </isif>
+                                                <isif condition="${default_transporterid=='16'}">
+                                                    <option value="16" selected>16：YU-PACK</option>
+                                                    <iselse>
+                                                    <option value="16">16：YU-PACK</option>
+                                                </isif>
+                                                <isif condition="${default_transporterid=='18'}">
+                                                    <option value="18" selected>18：FUKUYAMA</option>
+                                                    <iselse>
+                                                    <option value="18">18：FUKUYAMA</option>
+                                                </isif>
+                                                <isif condition="${default_transporterid=='27'}">
+                                                    <option value="27" selected>27：ECO HAI</option>
+                                                    <iselse>
+                                                    <option value="27">27：ECO HAI</option>
+                                                </isif>
+                                                <isif condition="${default_transporterid=='28'}">
+                                                    <option value="28" selected>28：OTHER</option>
+                                                    <iselse>
+                                                    <option value="28">28：OTHER</option>
+                                                </isif>
+                                            </select>
+                                        </isif>
+                                    </isif>
+                                </td>
+                                <td nowrap="nowrap" class="table_detail e s">
+                                    <isif condition="${paytype=='GMOPostPay'}">
+                                        <isscript>
+                                            var isListTracking = false;
+                                            if (pdict.listTracking != null) {
+                                                if (pdict.listTracking.hasOwnProperty(order.orderNo)) {
+                                                    isListTracking = true;
+                                                }
+                                            }
+                                        </isscript>
+                                        <isif condition="${isListTracking}">
+                                            <input type="text" name="tracking_${order.orderNo}" pattern="^[0-9]+$" value="${pdict.listTracking[order.orderNo]}" class="inp_w">
+                                        <iselse>
+                                            <input type="text" name="tracking_${order.orderNo}" pattern="^[0-9]+$" value="" class="inp_w">
+                                        </isif>
+                                    </isif>
+                                </td>
+                            </isif>
+                            <isif condition="${result.isEnableRakutenId==true || result.isEnablePostpay==true}">
+                                <!-- Amount Change Button -->
+                                <isif condition="${changeButton}">
+                                    <isif condition="${paytype=='RakutenPay'}">
+                                        <td class="button e s" align="center"><button formaction="${URLUtils.url('Order-RakutenIDAmountChange')}" class="button" value=${order.orderNo} name="change" type="submit" formmethod="post">Change</button></td>
+                                    </isif>
+                                    <isif condition="${paytype=='GMOPostPay'}">
+                                        <td class="button e s" align="center"><button formaction="${URLUtils.url('Order-GMOPostPayAmountChange')}" class="button" value=${order.orderNo} name="change" type="submit" formmethod="post">Change</button></td>
+                                    </isif>
+                                <iselse>
+                                    <td class="button e s" align="center"><button class="button" value="change" name="change" type="submit" disabled>Change</button></td>
+                                </isif>
+                            </isif>
+                        </tr>
+                        <isscript>
+                            if( paytype == 'RakutenPay' )
+                            {
+                                counter++;
+                            }
+                        </isscript>
+                        </isloop>
+                      </tbody>
+                </table>
+                <table width="100%" cellspacing="0" cellpadding="0" border="0" class="w e s">
+                <tbody>
+                <tr>
+                    <td align="right">
+                        <table cellspacing="4" cellpadding="0" border="0">
+                            <tbody>
+                                <tr>
+                                    <td class="button"><button class="button" value="capture" name="capture" type="submit">Capture</button></td>
+                                    <td class="button"><button class="button" value="cancel" name="cancel" type="submit">Cancel Authorization</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody></table>
+            </td>
+        </tr>
+        <!-- PAGING -->
+        <tr>
+            <td align="right">
+            <isif condition="${!pdict.OrderPagingModel.empty}">
+                <isscript>
+                    current = pdict.OrderPagingModel.start;
+                    totalCount = pdict.OrderPagingModel.count;
+                    pageSize = pdict.OrderPagingModel.pageSize;
+                    pageURL = URLUtils.https('Order-History');
+                    currentPage = pdict.OrderPagingModel.currentPage;
+                    maxPage = pdict.OrderPagingModel.maxPage;
+
+                    showingStart = current + 1;
+                    showingEnd = current + pageSize;
+
+                    if (showingEnd > totalCount)
+                    {
+                        showingEnd = totalCount;
+                    }
+
+                    lr = 2; // number of explicit page links to the left and right
+                    if ( maxPage <= 2*lr )
+                    {
+                        rangeBegin = 0;
+                        rangeEnd = maxPage;
+                    }
+                    else
+                    {
+                        rangeBegin = Math.max( Math.min( currentPage - lr, maxPage - 2*lr ), 0 );
+                        rangeEnd = Math.min( rangeBegin + 2*lr, maxPage );
+                    }
+                </isscript>
+
+                <table width="100%" class="pagecursor">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <table cellspacing="1" cellpadding="1" border="0" width="100%" class="pagecursor">
+                                <tbody>
+                                <tr>
+                                    <td nowrap="nowrap" width="40%" align="left" class="pagecursortxt top">
+                                        <isif condition="${totalCount == 1}">
+                                            Showing <span class="pagecursoritem bold"><isprint value="${StringUtils.formatInteger(totalCount)}"/></span> item
+                                            <iselseif condition="${totalCount < pageSize}">
+                                                Showing <span class="pagecursoritem bold"><isprint value="${StringUtils.formatInteger(totalCount)}"/></span> items
+                                                <iselse/>
+                                                Showing <span class="pagecursoritem bold"><isprint value="${StringUtils.formatInteger(showingStart)}"/></span> - <span class="pagecursoritem bold"><isprint value="${StringUtils.formatInteger(showingEnd)}"/></span> of
+                                                <span class="pagecursoritem bold"><isprint value="${pdict.OrderPagingModel.count}"/></span> items
+                                        </isif>
+                                    </td>
+
+                                    <td nowrap="nowrap" class="pagecursortxt top">
+                                    <!--
+                                        Show
+
+                                        <span class="pagecursortxt">
+
+                                        <button value="All" class="pagecursorbtn perm_not_disabled" name="PageSize" type="submit">All</button>
+
+                                        </span>
+
+                                        items -->
+                                    </td>
+                                    <isif condition="${(currentPage > 0) && (maxPage > 4)}">
+                                        <td width="1" class="pagecursortxt">
+                                            <a class="pagecursorbtn perm_not_disabled" href="${decodeURI(pdict.OrderPagingModel.appendPaging( pageURL, 0))}"><span>&lt;&lt;</span></a>
+                                        </td>
+                                        <td width="1" class="pagecursortxt">
+                                            <a class="pagecursorbtn perm_not_disabled" href="${decodeURI(pdict.OrderPagingModel.appendPaging( pageURL, current - pageSize))}"><span>&lt;</span></a>
+                                        </td>
+                                    </isif>
+
+                                    <isif condition="${maxPage >= 1}">
+                                        <isloop status="i" begin="${rangeBegin}" end="${rangeEnd}">
+                                            <isif condition="${i.index != currentPage}">
+                                                <td width="1" class="pagecursortxt">
+                                                    <a class="pagecursorbtn perm_not_disabled page-<isprint value="${i.index + 1}" style="0"/>" href="${decodeURI(pdict.OrderPagingModel.appendPaging( pageURL, current + (i.index - currentPage) * pageSize))}"><isprint value="${i.index + 1}" style="0"/></a>
+                                                </td>
+                                            <iselse>
+                                                <td width="1" class="pagecursoritem top"><b>[<isprint value="${i.index + 1}" style="0"/>]</b></td>
+                                            </isif>
+                                        </isloop>
+
+                                        <isif condition="${(current < totalCount - pageSize) && (maxPage > 4)}">
+                                            <td width="1" class="pagecursortxt">
+                                                <a class="pagecursorbtn perm_not_disabled" href="${decodeURI(pdict.OrderPagingModel.appendPaging( pageURL, current + pageSize))}"><span>&gt;</span></a>
+                                            </td>
+                                            <td width="1" class="pagecursortxt">
+                                                <a class="pagecursorbtn perm_not_disabled" href="${decodeURI(pdict.OrderPagingModel.appendPaging( pageURL, current + (maxPage - currentPage) * pageSize))}"><span>&gt;&gt;</span></a>
+                                            </td>
+                                        </isif>
+                                    </isif>
+
+                                </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </isif>
+            </td>
+        </tr>
+        <!-- END PAGING -->
+    </table>
+</form>
+</isif>
+
+</iscontent>
+</isdecorate>

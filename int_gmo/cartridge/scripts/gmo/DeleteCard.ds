@@ -1,0 +1,46 @@
+/**
+ * DeleteCard.ds
+ *
+ * This script attempts to delete a credit card in GMO.
+ *
+ * @input CardSeq : String
+ * @input CardNumber : String
+ * @input AccountID : String
+ * @output Message : String
+*/
+importPackage( dw.system );
+importPackage( dw.net );
+importPackage( dw.web );
+importPackage( dw.crypto );
+importPackage( dw.util );
+importPackage( dw.svc );
+
+var apiCommon = require('./ApiCommon');
+
+function execute( pdict : PipelineDictionary ) : Number
+{
+   	 try {
+   		var siteID = Site.getCurrent().getCustomPreferenceValue('gmo_siteID');
+		var sitePass = Site.getCurrent().getCustomPreferenceValue('gmo_sitePass');
+	    var paramRequest = 'SiteID=' + siteID + '&'
+	                       + 'SitePass=' + sitePass + '&'
+	                       + 'MemberID=' +  pdict.AccountID + '&'
+	                       + 'CardSeq=' +  pdict.CardSeq;
+
+	    var objrespone = apiCommon.callApi("GMO.DeleteCard", paramRequest);
+
+	    if(objrespone.hasOwnProperty('CardSeq')){
+	    	Logger.getLogger("GMO","GMO").debug("API 'DeleteCard.idPass' : delete card number {0} success !!!",pdict.CardNumber);
+	    	pdict.Message = "Delete card successfully!";
+	    }else{
+	    	Logger.getLogger("GMO","GMO").debug("API 'DeleteCard.idPass' : delete card number {0} fail !!! ErrInfo={1}",pdict.CardNumber, objrespone.ErrInfo);
+	    	return PIPELET_ERROR;
+	    }
+    } catch(e) {
+    	Logger.getLogger("GMO","GMO").debug("API 'DeleteCard.idPass' : delete card number {0} error !!!",pdict.CardNumber);
+		return PIPELET_ERROR;
+	}
+
+  	return PIPELET_NEXT;
+}
+exports.execute = execute;

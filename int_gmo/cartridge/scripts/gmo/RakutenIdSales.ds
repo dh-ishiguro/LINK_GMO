@@ -1,0 +1,50 @@
+/**
+ * RakutenIdSales.ds
+ *
+ * This script attempts to set payment status of PAYMENT_STATUS_PAID.
+ *
+ * @input OrderID : String
+ * @input AccessID : String
+ * @input AccessPass : String
+*/
+importPackage( dw.system );
+importPackage( dw.net );
+importPackage( dw.web );
+importPackage( dw.crypto );
+importPackage( dw.util );
+importPackage( dw.svc );
+
+var apiCommon = require('./ApiCommon');
+
+function execute( pdict : PipelineDictionary ) : Number
+{
+	let logger = Logger.getLogger("GMO","GMO");
+	try {
+		let shopID = Site.getCurrent().getCustomPreferenceValue('gmo_shopID');
+		let shopPass = Site.getCurrent().getCustomPreferenceValue('gmo_shopPass');
+		let paramRequest	= 'ShopID=' + shopID + '&'
+							+ 'ShopPass=' + shopPass + '&'
+							+ 'AccessID=' + pdict.AccessID + '&'
+							+ 'AccessPass=' + pdict.AccessPass + '&'
+							+ 'OrderID=' +  pdict.OrderID;
+
+		var objrespone = apiCommon.callApi("GMO.RakutenIdSales", paramRequest);
+
+		if(objrespone.hasOwnProperty('Status') && objrespone['Status'] == 'REQSALES'){
+			logger.debug("API RakutenIdSales.idPass : execute order ID {0} success !; order status : Open!; payment status : Paid!"
+												, pdict.OrderID);
+		}else{
+			logger.debug("API RakutenIdSales.idPass : execute order ID {0} fail !; order status : Open!; payment status : Not Paid!; ErrCode : {1}; ErrInfo : {2}"
+												, pdict.OrderID
+												, objrespone["ErrCode"]
+												, objrespone["ErrInfo"]);
+			return PIPELET_ERROR;
+		}
+	} catch(e) {
+		logger.debug("API RakutenIdSales.idPass : execute order ID {0} error !; order status : Open!; payment status : Not Paid!"
+											, pdict.OrderID);
+		return PIPELET_ERROR;
+	}
+	return PIPELET_NEXT;
+}
+exports.execute = execute;

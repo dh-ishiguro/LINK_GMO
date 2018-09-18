@@ -1,0 +1,61 @@
+/**
+ * ApiCommon.ds
+ *
+ * This script provides api common logic.
+ *
+ */
+
+importPackage( dw.system );
+importPackage( dw.svc );
+
+var logger = Logger.getLogger("GMO","GMO");
+
+/**
+ * Call Service API of GMO
+ * @param serviceName  service name
+ * @param paramRequest request parameters
+ * @return key/value map of result
+ */
+function callApi( serviceName: String, paramRequest: String ) : Object
+{
+	var service: Service;
+	var result: Result;
+
+	service = ServiceRegistry.get(serviceName);
+	service.addHeader("Content-Type", "application/x-www-form-urlencoded");
+	service.setRequestMethod("POST");
+	logger.debug("API Call: [{0}] {1}", serviceName, paramRequest);
+	result = service.call(paramRequest);
+
+	if ( result.ok ) {
+		logger.debug("API Result: {0}", result.object.text);
+		return parseResponse(result);
+	} else {
+		logger.error("API Error: [{0}] {1}", serviceName, result.errorMessage);
+		return {}
+	}
+}
+
+/**
+ * Parse result from API of GMO
+ * @param result  service result
+ * @return key/value map of result
+ */
+function parseResponse( result: Result ) : Object
+{
+	var response = result.object.text.split("&");
+	var objResponse = {};
+	for(let i in response){
+		var len = response[i].length;
+		var pos = response[i].indexOf('=');
+		if (pos > 0) {
+			var key = response[i].substr(0, pos);
+			var val = response[i].substr(pos + 1, len);
+			objResponse[key] = val;
+		}
+	}
+	return objResponse;
+}
+
+exports.callApi = callApi;
+exports.parseResponse = parseResponse;

@@ -1,0 +1,67 @@
+<!--- TEMPLATENAME: postpaymsg.isml --->
+<isscript>
+	var result = require('~/../int_gmo/cartridge/controllers/GMO_PAYMENT').IsEnableGMO();
+	var paymentMethodIsPostpay=false;
+</isscript>
+
+<isloop items="${pdict.Basket.paymentInstruments}" var="paymentInstr" status="loopstate">
+	<isif condition="${paymentInstr.paymentMethod.equals('GMOPOSTPAY')}">
+		<isscript>paymentMethodIsPostpay=true;</isscript>
+	</isif>
+</isloop>
+
+<isif condition="${paymentMethodIsPostpay==true}">
+	<isif condition="${result.isEnableSMS==true}">
+		<input type="hidden" name="gmoAuthenticationId" id="gmoAuthenticationId" class="gmoAuthenticationId" value="${pdict.CurrentSession.custom.smsauth.shopInfo.authenticationId!=null?pdict.CurrentSession.custom.smsauth.shopInfo.authenticationId:''}" />
+		<input type="hidden" name="gmoShopCode" id="gmoShopCode" class="gmoShopCode" value="${pdict.CurrentSession.custom.smsauth.shopInfo.shopCode!=null?pdict.CurrentSession.custom.smsauth.shopInfo.shopCode:''}" />
+		<input type="hidden" name="gmoSmsPassword" id="gmoSmsPassword" class="gmoSmsPassword" value="${pdict.CurrentSession.custom.smsauth.shopInfo.smsConnectPassword!=null?pdict.CurrentSession.custom.smsauth.shopInfo.smsConnectPassword:''}" />
+		<input type="hidden" name="gmoHttpHeader" id="gmoHttpHeader" class="gmoHttpHeader" value="${pdict.CurrentSession.custom.smsauth.gmoHttpHeader!=null?pdict.CurrentSession.custom.smsauth.gmoHttpHeader:''}" />
+		<input type="hidden" name="gmoShopTransactionId" id="gmoShopTransactionId" class="gmoShopTransactionId" value="${pdict.CurrentSession.custom.smsauth.buyer.shopTransactionId!=null?pdict.CurrentSession.custom.smsauth.buyer.shopTransactionId:''}" />
+		<input type="hidden" name="gmoShopOrderDate" id="gmoShopOrderDate" class="gmoShopOrderDate" value="${pdict.CurrentSession.custom.smsauth.buyer.shopOrderDate!=null?pdict.CurrentSession.custom.smsauth.buyer.shopOrderDate:''}" />
+		<input type="hidden" name="gmoFullName" id="gmoFullName" class="gmoFullName" value="${pdict.CurrentSession.custom.smsauth.buyer.fullName!=null?pdict.CurrentSession.custom.smsauth.buyer.fullName:''}" />
+		<input type="hidden" name="gmoFullKanaName" id="gmoFullKanaName" class="gmoFullKanaName" />
+		<input type="hidden" name="gmoZipCode" id="gmoZipCode" class="gmoZipCode" value="${pdict.CurrentSession.custom.smsauth.buyer.zipCode!=null?pdict.CurrentSession.custom.smsauth.buyer.zipCode:''}" />
+		<input type="hidden" name="gmoAddress" id="gmoAddress" class="gmoAddress" value="${pdict.CurrentSession.custom.smsauth.buyer.address!=null?pdict.CurrentSession.custom.smsauth.buyer.address:''}" />
+		<input type="hidden" name="gmoCompanyName" id="gmoCompanyName" class="gmoCompanyName" />
+		<input type="hidden" name="gmoDepartmentName" id="gmoDepartmentName" class="gmoDepartmentName" />
+		<input type="hidden" name="gmoTel1" id="gmoTel1" class="gmoTel1" value="${pdict.CurrentSession.custom.smsauth.buyer.tel1!=null?pdict.CurrentSession.custom.smsauth.buyer.tel1:''}" />
+		<input type="hidden" name="gmoTel2" id="gmoTel2" class="gmoTel2" />
+		<input type="hidden" name="gmoEmail1" id="gmoEmail1" class="gmoEmail1" value="${pdict.CurrentSession.custom.smsauth.buyer.email1!=null?pdict.CurrentSession.custom.smsauth.buyer.email1:''}" />
+		<input type="hidden" name="gmoEmail2" id="gmoEmail2" class="gmoEmail2" />
+		<input type="hidden" name="gmoBilledAmount" id="gmoBilledAmount" class="gmoBilledAmount" value="${pdict.CurrentSession.custom.smsauth.buyer.billedAmount!=null?pdict.CurrentSession.custom.smsauth.buyer.billedAmount:''}" />
+		<input type="hidden" name="gmoExtend1" id="gmoExtend1" class="gmoExtend1" />
+		<input type="hidden" name="gmoPaymentType" id="gmoPaymentType" class="gmoPaymentType" value="${pdict.CurrentSession.custom.smsauth.buyer.paymentType!=null?pdict.CurrentSession.custom.smsauth.buyer.paymentType:''}" />
+
+		<input type="hidden" name="gmoFullNameDelivery" id="gmoFullNameDelivery" class="gmoFullNameDelivery" value="${pdict.CurrentSession.custom.smsauth.delivery.deliveryCustomer.fullName!=null?pdict.CurrentSession.custom.smsauth.delivery.deliveryCustomer.fullName:''}" />
+		<input type="hidden" name="gmoFullKanaNameDelivery" id="gmoFullKanaNameDelivery" class="gmoFullKanaNameDelivery" />
+		<input type="hidden" name="gmoZipCodeDelivery" id="gmoZipCodeDelivery" class="gmoZipCodeDelivery" value="${pdict.CurrentSession.custom.smsauth.delivery.deliveryCustomer.zipCode!=null?pdict.CurrentSession.custom.smsauth.delivery.deliveryCustomer.zipCode:''}" />
+		<input type="hidden" name="gmoAddressDelivery" id="gmoAddressDelivery" class="gmoAddressDelivery" value="${pdict.CurrentSession.custom.smsauth.delivery.deliveryCustomer.address!=null?pdict.CurrentSession.custom.smsauth.delivery.deliveryCustomer.address:''}" />
+		<input type="hidden" name="gmoCompanyNameDelivery" id="gmoCompanyNameDelivery" class="gmoCompanyNameDelivery" />
+		<input type="hidden" name="gmoDepartmentNameDelivery" id="gmoDepartmentNameDelivery" class="gmoDepartmentNameDelivery" />
+		<input type="hidden" name="gmoTelDelivery" id="gmoTelDelivery" class="gmoTelDelivery" value="${pdict.CurrentSession.custom.smsauth.delivery.deliveryCustomer.tel!=null?pdict.CurrentSession.custom.smsauth.delivery.deliveryCustomer.tel:''}" />
+		<isloop items="${pdict.CurrentSession.custom.smsauth.delivery.details}" var="details">
+			<input type="hidden" name="gmoDetailNameDetail" id="gmoDetailNameDetail" class="gmoDetailNameDetail" value="${details.detailName}" />
+			<input type="hidden" name="gmoDetailPriceDetail" id="gmoDetailPriceDetail" class="gmoDetailPriceDetail" value="${details.detailPrice}" />
+			<input type="hidden" name="gmoDetailQuantityDetail" id="gmoDetailQuantityDetail" class="gmoDetailQuantityDetail" value="${details.detailQuantity}" />
+			<input type="hidden" name="gmoGmoExtend2Detail" id="gmoGmoExtend2Detail" class="gmoGmoExtend2Detail" />
+			<input type="hidden" name="gmoGmoExtend3Detail" id="gmoGmoExtend3Detail" class="gmoGmoExtend3Detail" />
+			<input type="hidden" name="gmoGmoExtend4Detail" id="gmoGmoExtend4Detail" class="gmoGmoExtend4Detail" />
+		</isloop>
+		<input type="hidden" name="gmoChksumReq" id="gmoChksumReq" class="gmoChksumReq" value="${pdict.CurrentSession.custom.smsauth.gmoChksumReq!=null?pdict.CurrentSession.custom.smsauth.gmoChksumReq:''}" />
+		<input type="hidden" id="fraudbuster" name="fraudbuster" class="gmoDeviceInfo" />
+		<script type="text/javascript" src="//fraud-buster.appspot.com/js/fraudbuster.js"></script>
+		<input type="hidden" name="gmoJsonResult" id="gmoJsonResult" class="gmoJsonResult" />
+		<input type="hidden" name="gmoJsonShopTransactionId" id="gmoJsonShopTransactionId" class="gmoJsonShopTransactionId" />
+		<input type="hidden" name="gmoJsonGmoTransactionId" id="gmoJsonGmoTransactionId" class="gmoJsonGmoTransactionId" />
+		<input type="hidden" name="gmoJsonAuthorResult" id="gmoJsonAuthorResult" class="gmoJsonAuthorResult" />
+		<input type="hidden" name="gmoJsonChksumRes" id="gmoJsonChksumRes" class="gmoJsonChksumRes" />
+		<input type="hidden" name="gmoJsonError" id="gmoJsonError" class="gmoJsonError" />
+		<isprint value="${Resource.msg('summary.postpaywithsms','checkout',null)}" encoding="off" />
+	<iselse/>
+		<input type="hidden" id="fraudbuster" name="fraudbuster" />
+		<script type="text/javascript" src="//fraud-buster.appspot.com/js/fraudbuster.js"></script>
+		<isprint value="${Resource.msg('summary.postpay','checkout',null)}" encoding="off" />
+	</isif>
+<iselse/>
+	<p>postpaymsg not POSTPAY
+</isif>

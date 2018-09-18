@@ -1,0 +1,109 @@
+/**
+ * ExecTran.ds
+ *
+ * @input OrderID : String
+ * @input AccessID : String
+ * @input AccessPass : String
+ * @input MemberID : String
+ * @input PaymentInstruments : dw.order.PaymentInstrument
+ * @input jobCD : String
+ * @input payment : Boolean
+ * @output resultPayment : Object
+*/
+importPackage( dw.system );
+importPackage( dw.net );
+importPackage( dw.web );
+importPackage( dw.crypto );
+importPackage( dw.util );
+importPackage( dw.svc );
+
+var apiCommon = require('./ApiCommon');
+
+function execute( pdict : PipelineDictionary ) : Number
+{
+	var orderStatus = "Open!";
+   	 try {
+
+   	 	var group = dw.order.OrderMgr.getOrder(pdict.OrderID).getCustomer().getCustomerGroups().iterator();
+		var html ='';
+		while(group.hasNext()){
+			let g = group.next();
+			if(g.getID() != 'Everyone')
+				html += g.getID().toString();
+		}
+
+		var siteID = Site.getCurrent().getCustomPreferenceValue('gmo_siteID');
+		var sitePass = Site.getCurrent().getCustomPreferenceValue('gmo_sitePass');
+	    var paramRequest = 'AccessID=' + pdict.AccessID
+	                       +'&AccessPass=' + pdict.AccessPass
+	                       +'&OrderID=' +  pdict.OrderID;
+	    var method = '1';
+	    var creditCardPayInfo = pdict.PaymentInstruments.custom.creditCardPayInfo;
+	    if(creditCardPayInfo !== null) {
+	    	method = pdict.PaymentInstruments.custom.creditCardPayInfo;
+	    }
+	    paramRequest+='&Method=' +  method;
+	    var creditCardPayTime = pdict.PaymentInstruments.custom.creditCardPayTime;
+	    if(creditCardPayTime !== null) {
+	    	paramRequest+='&PayTimes=' +  creditCardPayTime;
+	    }
+	    var Token =  pdict.PaymentInstruments.custom.creditCardToken;
+	    if(Token!=null){
+	    	paramRequest+='&Token=' +  Token;
+	    }else{
+	    	var creditCardSeq = pdict.PaymentInstruments.custom.creditCardSeq;
+	    	paramRequest+='&SiteID=' +  siteID
+	    					+ '&SitePass=' +  sitePass
+	    					+ '&MemberID=' + pdict.MemberID
+	    					+ '&CardSeq=' + creditCardSeq;
+	    }
+	    if(pdict.DeviceCategory != null) {
+	        paramRequest+='&HttpAccept=' +  pdict.HttpAccept
+	                        + '&HttpUserAgent=' + pdict.HttpUserAgent
+	                        + '&DeviceCategory=' + pdict.DeviceCategory;
+	    }
+
+	    var objrespone = apiCommon.callApi("GMO.ExecTransaction", paramRequest);
+
+		if(objrespone.hasOwnProperty('ACS')){
+			var paymentStatus = (pdict.payment==false)?"Not Paid!":"Paid!";
+	    	pdict.resultPayment = objrespone;
+	    	Logger.getLogger("GMO","GMO").debug("API ExecTran.idPass : execute order ID {0} success !; order status :"+ orderStatus +"; payment status : " +  paymentStatus + "; JobCd : " + pdict.jobCD,pdict.OrderID);
+	    }else{
+	    	var paymentStatus = "Not Paid!";
+	    	Logger.getLogger("GMO","GMO").debug("API ExecTran.idPass : execute order ID {0} fail !; order status : "
+												+ orderStatus
+												+"; payment status : "
+												+  paymentStatus
+												+ "; JobCd : "
+												+ pdict.jobCD
+												+"; ErrCode :  "
+												+ objrespone["ErrCode"]
+												+"; ErrInfo :  "
+												+ objrespone["ErrInfo"],pdict.OrderID);
+	    	return PIPELET_ERROR;
+	    }
+    } catch(e) {
+    	var paymentStatus = "Not Paid!";
+    	Logger.getLogger("GMO","GMO").debug("API ExecTran.idPass : execute order ID {0} error !; order status : "+ orderStatus +"; payment status :  " +  paymentStatus  + "; JobCd : " + pdict.jobCD,pdict.OrderID);
+		return PIPELET_ERROR;
+	}
+  	return PIPELET_NEXT;
+}
+
+function memberGetFinalCardRegistration(siteID,sitePass,MemberID){
+	    var finalcardSeq = -1;
+	    var paramRequest = 'SiteID=' + siteID + '&'
+	                       + 'SitePass=' + sitePass + '&'
+	                       + 'MemberID=' +  MemberID;
+
+	    var objrespone = apiCommon.callApi("GMO.SearchCard", paramRequest);
+
+	    if(objrespone.hasOwnProperty('CardNo')){
+	    	Logger.getLogger("GMO","GMO").debug("API SearchCard.idPass in ExecTran: Search card fail !!! ErrInfo={0}",objrespone['ErrInfo']);
+			var arrCardSeq = objrespone['CardSeq'].split('|');
+			finalcardSeq = arrCardSeq.slice(-1)[0];
+	    }
+	    return finalcardSeq;
+}
+exports.execute = execute;

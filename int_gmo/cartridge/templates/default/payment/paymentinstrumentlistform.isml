@@ -1,0 +1,28 @@
+<!--- TEMPLATENAME: paymentinstrumentlistform.isml --->
+<div class="section-header">
+                    <a class="section-header-note add-card ${pdict.ApplicableCreditCards==null || (pdict.ApplicableCreditCards!=null && pdict.ApplicableCreditCards.size() < dw.system.Site.getCurrent().getCustomPreferenceValue('gmo_number_of_credit_card'))?'':'gmo-add-credit-not-active'}" href="${URLUtils.url('PaymentInstruments-Add')}" title="${Resource.msg('account.paymentinstrumentlist.addcard','account',null)}">
+                        ${Resource.msg('account.paymentinstrumentlist.addcard','account',null)}
+                    </a>
+                </div>
+                <isif condition="${pdict.ApplicableCreditCards!=null && pdict.ApplicableCreditCards.size() > 0}">
+                    <ul class="payment-list">
+                        <isloop items="${pdict.ApplicableCreditCards}" var="creditcard" status="loopstate">
+                        <li class="<isif condition="${loopstate.first}"> first <iselseif condition="${loopstate.last}"> last</isif>">
+                            <isminicreditcard card="${creditcard}" show_expiration="${true}"/>
+
+                            <form action="${URLUtils.url('PaymentInstruments-Delete')}" name="payment-remove" method="post" id="creditcards_${loopstate.count}">
+                                <fieldset>
+                                    <button type="submit" class="button-text delete" value="${Resource.msg('account.paymentinstrumentlist.deletecard','account',null)}" name="${Resource.msg('account.paymentinstrumentlist.deletecard','account',null)}">
+                                        ${Resource.msg('account.paymentinstrumentlist.deletecard','account',null)}
+                                    </button>
+                                    <input type="hidden" name="Card_id" value="${creditcard.UUID}"/>
+                                    <input type="hidden" name="CardSeq" value="${creditcard.creditCardSeq}"/>
+                                    <input type="hidden" name="CardNumber" value="${creditcard.creditCardNumber}"/>
+                                    <input type="hidden" name="${dw.web.CSRFProtection.getTokenName()}" value="${dw.web.CSRFProtection.generateToken()}"/>
+                                </fieldset>
+                            </form>
+
+                        </li>
+                        </isloop>
+                    </ul>
+                </isif>

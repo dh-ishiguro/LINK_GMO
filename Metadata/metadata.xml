@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata xmlns="http://www.demandware.com/xml/impex/metadata/2006-10-31">
+    <type-extension type-id="Profile">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="cardType">
+                <display-name xml:lang="x-default">Card Type</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+        </custom-attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="Standard">
+                <display-name xml:lang="x-default">Profile Attributes</display-name>
+                <attribute attribute-id="cardType"/>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+    <type-extension type-id="Order">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="gmoAccessID">
+                <display-name xml:lang="x-default">GMO Access ID</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmoAccessPass">
+                <display-name xml:lang="x-default">GMO Access Pass</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmoIsAuthorization">
+                <display-name xml:lang="x-default">GMO Check Autorization</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmoPdCompanyCode">
+                <display-name xml:lang="x-default">GMO_POSTPAY PhysicalDistribution CompanyCode</display-name>
+                <type>int</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmoSlipno">
+                <display-name xml:lang="x-default">GMO_POSTPAY Trace# by PdCompany</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmoPaymentType">
+                <display-name xml:lang="x-default">GMO_POSTPAY Include or Exclude bill</display-name>
+                <type>int</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+        </custom-attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="gmoInfo">
+                <display-name xml:lang="x-default">GMO infomation</display-name>
+                <attribute attribute-id="gmoIsAuthorization"/>
+                <attribute attribute-id="gmoAccessID"/>
+                <attribute attribute-id="gmoAccessPass"/>
+                <attribute attribute-id="gmoPdCompanyCode"/>
+                <attribute attribute-id="gmoSlipno"/>
+                <attribute attribute-id="gmoPaymentType"/>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+    <type-extension type-id="Basket">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="gmoPaymentType">
+                <display-name xml:lang="x-default">GMO_POSTPAY Include or Exclude bill</display-name>
+                <type>int</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+        </custom-attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="gmoInfo">
+                <display-name xml:lang="x-default">GMO infomation</display-name>
+                <attribute attribute-id="gmoPaymentType"/>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+    <type-extension type-id="OrderPaymentInstrument">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="creditCardToken">
+                <display-name xml:lang="x-default">Credit Card Token</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="creditCardToken1">
+                <display-name xml:lang="x-default">Add new card token</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="memberIsSaveCard">
+                <display-name xml:lang="x-default">Member is save card </display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="creditCardSeq">
+                <display-name xml:lang="x-default">Credit Card Seq</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="is3dSecure">
+                <display-name xml:lang="x-default">Credit Card is 3D secure</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="creditCardPayInfo">
+                <display-name xml:lang="x-default">Credit Card Pay Info</display-name>
+                <type>int</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="creditCardPayTime">
+                <display-name xml:lang="x-default">Credit Card Pay Time</display-name>
+                <type>int</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+        </custom-attribute-definitions>
+    </type-extension>
+
+    <type-extension type-id="SitePreferences">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="gmo_api_base_url">
+                <display-name xml:lang="x-default">GMO API BASE URL</display-name>
+                <type>string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+                <default-value>https://pt01.mul-pay.jp</default-value>
+            </attribute-definition>
+
+            <attribute-definition attribute-id="gmo_siteID">
+                <display-name xml:lang="x-default">GMO SITE ID</display-name>
+                <type>string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_sitePass">
+                <display-name xml:lang="x-default">GMO SITE PASSWORD</display-name>
+                <type>string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_shopID">
+                <display-name xml:lang="x-default">GMO SHOP ID</display-name>
+                <type>string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_shopPass">
+                <display-name xml:lang="x-default">GMO SHOP PASSWORD</display-name>
+                <type>string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_authorization_mode_only">
+                <display-name xml:lang="x-default">GMO AUTHORIZATION MODE ONLY</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_number_of_credit_card">
+                <display-name xml:lang="x-default">GMO NUMBER OF CREDIT CARD</display-name>
+                <type>int</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-value>1.0</min-value>
+                <max-value>5.0</max-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_save_card_mode">
+                <display-name xml:lang="x-default">GMO SAVE CARD MODE</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_enable_catridge">
+                <display-name xml:lang="x-default">ENABLE GMO CATRIDGE</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_enable_rakutenid">
+                <display-name xml:lang="x-default">ENABLE GMO RAKUTENID</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_number_of_installments_amex">
+                <display-name xml:lang="x-default">GMO NUMBER OF INSTALLMENTS AMEX</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+                <default-value>2,3,5,6,10,12,15,18,20,24</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_number_of_installments_diners">
+                <display-name xml:lang="x-default">GMO NUMBER OF INSTALLMENTS DINERS</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_number_of_installments_jcb">
+                <display-name xml:lang="x-default">GMO NUMBER OF INSTALLMENTS JCB</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+                <default-value>2,3,5,6,10,12,15,18,20,24</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_number_of_installments_master">
+                <display-name xml:lang="x-default">GMO NUMBER OF INSTALLMENTS MASTER</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+                <default-value>2,3,5,6,10,12,15,18,20,24</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_number_of_installments_visa">
+                <display-name xml:lang="x-default">GMO NUMBER OF INSTALLMENTS VISA</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+                <default-value>2,3,5,6,10,12,15,18,20,24</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_rakutenid_auth_mode_only">
+                <display-name xml:lang="x-default">GMO RAKUTENID AUTH MODE ONLY</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_use_3d_secure_amex">
+                <display-name xml:lang="x-default">GMO USE 3D SECURE AMEX</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_use_3d_secure_diners">
+                <display-name xml:lang="x-default">GMO USE 3D SECURE DINERS</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_use_3d_secure_jcb">
+                <display-name xml:lang="x-default">GMO USE 3D SECURE JCB</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_use_3d_secure_master">
+                <display-name xml:lang="x-default">GMO USE 3D SECURE MASTER</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_use_3d_secure_visa">
+                <display-name xml:lang="x-default">GMO USE 3D SECURE VISA</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_use_bonus_amex">
+                <display-name xml:lang="x-default">GMO USE BONUS AMEX</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_use_bonus_diners">
+                <display-name xml:lang="x-default">GMO USE BONUS DINERS</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_use_bonus_jcb">
+                <display-name xml:lang="x-default">GMO USE BONUS JCB</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_use_bonus_master">
+                <display-name xml:lang="x-default">GMO USE BONUS MASTER</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_use_bonus_visa">
+                <display-name xml:lang="x-default">GMO USE BONUS VISA</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_use_installments_amex">
+                <display-name xml:lang="x-default">GMO USE INSTALLMENTS AMEX</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_use_installments_bonus_amex">
+                <display-name xml:lang="x-default">GMO USE INSTALLMENTS BONUS AMEX</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_use_installments_bonus_diners">
+                <display-name xml:lang="x-default">GMO USE INSTALLMENTS BONUS DINERS</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_use_installments_bonus_jcb">
+                <display-name xml:lang="x-default">GMO USE INSTALLMENTS BONUS JCB</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_use_installments_bonus_master">
+                <display-name xml:lang="x-default">GMO USE INSTALLMENTS BONUS MASTER</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_use_installments_bonus_visa">
+                <display-name xml:lang="x-default">GMO USE INSTALLMENTS BONUS VISA</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_use_installments_diners">
+                <display-name xml:lang="x-default">GMO USE INSTALLMENTS DINERS</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_use_installments_jcb">
+                <display-name xml:lang="x-default">GMO USE INSTALLMENTS JCB</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_use_installments_master">
+                <display-name xml:lang="x-default">GMO USE INSTALLMENTS MASTER</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_use_installments_visa">
+                <display-name xml:lang="x-default">GMO USE INSTALLMENTS VISA</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_use_revolving_amex">
+                <display-name xml:lang="x-default">GMO USE REVOLVING AMEX</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_use_revolving_diners">
+                <display-name xml:lang="x-default">GMO USE REVOLVING DINERS</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_use_revolving_jcb">
+                <display-name xml:lang="x-default">GMO USE REVOLVING JCB</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_use_revolving_master">
+                <display-name xml:lang="x-default">GMO USE REVOLVING MASTER</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_use_revolving_visa">
+                <display-name xml:lang="x-default">GMO USE REVOLVING VISA</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>true</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_postpay_shopcode">
+                <display-name xml:lang="x-default">GMO POSTPAY SHOPCODE</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_postpay_connectpwd">
+                <display-name xml:lang="x-default">GMO POSTPAY CONNECTPASSWORD</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_postpay_smsconnectpwd">
+                <display-name xml:lang="x-default">GMO POSTPAY SMS CONNECTPASSWORD</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_postpay_authid">
+                <display-name xml:lang="x-default">GMO POSTPAY AUTHENTICATIONID</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_postpay_pdcompanycode">
+                <display-name xml:lang="x-default">GMO POSTPAY CURRENTTRANCEPORTER</display-name>
+                <type>int</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_postpay_enableenclose">
+                <display-name xml:lang="x-default">GMO POSTPAY ENABLE ENCLOSESERVICE</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_postpay_enablesmscert">
+                <display-name xml:lang="x-default">GMO POSTPAY ENABLE  SMSCERT</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_postpay_smscert_url">
+                <display-name xml:lang="x-default">GMO POSTPAY URL for SMSCERT</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="gmo_enable_postpay">
+                <display-name xml:lang="x-default">GMO ENABLE POSTPAY</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+        </custom-attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="gmo">
+                <display-name xml:lang="x-default">GMO Config</display-name>
+                <attribute attribute-id="gmo_api_base_url"/>
+                <attribute attribute-id="gmo_siteID"/>
+                <attribute attribute-id="gmo_sitePass"/>
+                <attribute attribute-id="gmo_shopID"/>
+                <attribute attribute-id="gmo_shopPass"/>
+                <attribute attribute-id="gmo_number_of_credit_card"/>
+                <attribute attribute-id="gmo_authorization_mode_only"/>
+                <attribute attribute-id="gmo_save_card_mode"/>
+                <attribute attribute-id="gmo_enable_catridge"/>
+                <attribute attribute-id="gmo_rakutenid_auth_mode_only"/>
+                <attribute attribute-id="gmo_enable_rakutenid"/>
+                <attribute attribute-id="gmo_enable_postpay"/>
+            </attribute-group>
+            <attribute-group group-id="gmo_postpay">
+                <display-name xml:lang="x-default">GMO POSTPAY</display-name>
+                <attribute attribute-id="gmo_postpay_shopcode"/>
+                <attribute attribute-id="gmo_postpay_connectpwd"/>
+                <attribute attribute-id="gmo_postpay_smsconnectpwd"/>
+                <attribute attribute-id="gmo_postpay_authid"/>
+                <attribute attribute-id="gmo_postpay_pdcompanycode"/>
+                <attribute attribute-id="gmo_postpay_enableenclose"/>
+                <attribute attribute-id="gmo_postpay_enablesmscert"/>
+                <attribute attribute-id="gmo_postpay_smscert_url"/>
+            </attribute-group>
+            <attribute-group group-id="gmo_credit_card">
+                <display-name xml:lang="x-default">GMO Credit Card</display-name>
+                <attribute attribute-id="gmo_use_installments_visa"/>
+                <attribute attribute-id="gmo_use_bonus_visa"/>
+                <attribute attribute-id="gmo_use_installments_bonus_visa"/>
+                <attribute attribute-id="gmo_use_revolving_visa"/>
+                <attribute attribute-id="gmo_number_of_installments_visa"/>
+                <attribute attribute-id="gmo_use_3d_secure_visa"/>
+                <attribute attribute-id="gmo_use_installments_master"/>
+                <attribute attribute-id="gmo_use_bonus_master"/>
+                <attribute attribute-id="gmo_use_installments_bonus_master"/>
+                <attribute attribute-id="gmo_use_revolving_master"/>
+                <attribute attribute-id="gmo_number_of_installments_master"/>
+                <attribute attribute-id="gmo_use_3d_secure_master"/>
+                <attribute attribute-id="gmo_use_installments_jcb"/>
+                <attribute attribute-id="gmo_use_bonus_jcb"/>
+                <attribute attribute-id="gmo_use_installments_bonus_jcb"/>
+                <attribute attribute-id="gmo_use_revolving_jcb"/>
+                <attribute attribute-id="gmo_number_of_installments_jcb"/>
+                <attribute attribute-id="gmo_use_3d_secure_jcb"/>
+                <attribute attribute-id="gmo_use_installments_amex"/>
+                <attribute attribute-id="gmo_use_bonus_amex"/>
+                <attribute attribute-id="gmo_use_installments_bonus_amex"/>
+                <attribute attribute-id="gmo_use_revolving_amex"/>
+                <attribute attribute-id="gmo_number_of_installments_amex"/>
+                <attribute attribute-id="gmo_use_3d_secure_amex"/>
+                <attribute attribute-id="gmo_use_installments_diners"/>
+                <attribute attribute-id="gmo_use_bonus_diners"/>
+                <attribute attribute-id="gmo_use_installments_bonus_diners"/>
+                <attribute attribute-id="gmo_use_revolving_diners"/>
+                <attribute attribute-id="gmo_number_of_installments_diners"/>
+                <attribute attribute-id="gmo_use_3d_secure_diners"/>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+</metadata>

@@ -1,0 +1,21 @@
+<!--- TEMPLATENAME: rakutenidredirect.isml --->
+
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=Windows-31J">
+	</head>
+
+	<body OnLoad='OnLoadEvent();'>
+		<form name="RakutenIdStartCall" action="${dw.system.Site.getCurrent().getCustomPreferenceValue('gmo_api_base_url')}/payment/RakutenIdStart.idPass" method="POST">
+			<input type="hidden" name="AccessID" value="${pdict.AccessID}">
+			<input type="hidden" name="Token" value="${pdict.Token}">
+		</form>
+
+		<script >
+			function OnLoadEvent() {
+				document. RakutenIdStartCall.submit();
+			}
+		</script>
+	</body>
+</html>
+

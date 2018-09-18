@@ -1,0 +1,77 @@
+<!--- TEMPLATENAME: rakutenid_amountchange.isml --->
+
+<isdecorate template="application/MenuFrame">
+<iscontent type="text/html" charset="UTF-8">
+<isinclude template="inc/Modules">
+
+<style type="text/css">
+    .changeAmount_table{background-color: #FFFFFF;}
+    .headBcgrColor{background-color:#DADADA;}
+    .inp_w{width: 100%; text-align: right;}
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+</style>
+
+<form action="${URLUtils.url('Order-RakutenIDAmountChangeRform')}" name="submitChangeForm" method="post">
+
+<h1 class="overview_title" style="font-weight:normal; border-bottom: 1px solid #DADADA; margin-bottom: 0;" align="center">
+    Amount Change
+</h1>
+
+<h2 class="comment_description" align="center">
+    <p>Please change the following amount and push down the change button.<br>We will change the amount.</p>
+</h2>
+
+<isif condition="${pdict.ErrMsg}">
+    <table width="25%" cellspacing="0" cellpadding="4" border="0" class="error_box" align="center">
+        <tbody>
+            <tr>
+                <td class="error_icon e"><img width="16" height="15" border="0" alt="" src="/on/demandware.static/Sites-Site/-/default/v1421111154679/images/error.gif"></td>
+                <td width="100%" class="error"><p>${pdict.ErrMsg}.</p>
+            </tr>
+        </tbody>
+    </table>
+</isif>
+
+<br>
+
+<input type="hidden" name="hidOrderId" value="${pdict.OrderId}">
+
+<table width="30%" cellspacing="0" cellpadding="0" border="1" class="orderIdTax_table" align="center">
+    <tbody>
+        <tr>
+            <td nowrap="nowrap" align="center" class="table_header e s headBcgrColor"><b>Order No</b></td>
+            <td nowrap="nowrap" align="right">${pdict.OrderId}</td>
+        </tr>
+        <tr>
+            <td nowrap="nowrap" align="center" class="table_header e s headBcgrColor"><b>Total Amount</b></td>
+            <td nowrap="nowrap" align="right"><input type="number" id="totalAmount" name="totalAmount" pattern="\d+" min=1 required maxlength=20 value="${pdict.TotalAmount}" class="inp_w">
+        </tr>
+        <tr>
+            <table width="30%" cellspacing="0" cellpadding="0" border="0" class="button_box" style="min-width:400px;" align="center">
+                <td align="right">
+                    <table cellspacing="4" cellpadding="0" border="0">
+                        <tbody>
+                            <tr>
+                                <td class="button"><button class="button" name="capture" type="submit">Change</button></td>
+                                <td class="button"><button class="button" name="cancel"  type="reset"  onclick="window.location = '${URLUtils.url('Order-History')}'">Cancel</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </table>
+        </tr>
+    </tbody>
+</table>
+
+</form>
+
+</isinclude>
+</iscontent>
+</isdecorate>
